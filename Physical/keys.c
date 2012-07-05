@@ -101,8 +101,7 @@ void keypad_init(){
 ******************************************************************************/ 
 void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 {
-	uint16 x=0;
-	INTEnable(INT_CN,INT_DISABLED);
+	INTEnable(INT_CN,0);
 	
     // Step #1 - always clear the mismatch condition first
     dummy = PORTReadBits(IOPORT_B,  BIT_0 | BIT_1 | BIT_2);
@@ -110,13 +109,14 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
     // Step #2 - then clear the interrupt flag
     mCNClearIntFlag();
     
-   x++;
+
    
      // Step #3 - process the switches
      
     unsigned int sw1 = dummy&BIT_0;
     unsigned int sw2 = dummy&BIT_1;
     unsigned int sw3 = dummy&BIT_2;
+    unsigned int chk =0;
     unsigned int but1 = 0;
     unsigned int but2 = 0;
     unsigned int but3 = 0;
@@ -136,7 +136,7 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 		    
 	    }
     }
-    x++;
+
     
     
     PORTSetBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);
@@ -150,13 +150,13 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 					PORTEbits.RE2=1;
 					PORTEbits.RE3=1;
 				#endif	
-				x++;
+
 				
 							
 				PORTClearBits(IOPORT_B, BIT_3);
 				dummy = PORTReadBits(IOPORT_B,  BIT_0);
-				
-				if(dummy&BIT_0==0)
+				chk=dummy&BIT_0;
+				if(chk==0)
 				{
 					PORTEbits.RE0=1;
 					PORTEbits.RE1=0;
@@ -169,8 +169,8 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 					PORTSetBits(IOPORT_B, BIT_3);
 					PORTClearBits(IOPORT_B, BIT_4);
 					dummy = PORTReadBits(IOPORT_B,  BIT_0);
-					
-					if(dummy&BIT_0==0)
+					chk=dummy&BIT_0;
+					if(chk==0)
 					{
 						PORTEbits.RE0=0;
 						PORTEbits.RE1=0;
@@ -182,8 +182,8 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 					PORTSetBits(IOPORT_B, BIT_4);
 					PORTClearBits(IOPORT_B, BIT_5);
 					dummy = PORTReadBits(IOPORT_B,  BIT_0);
-					
-						if(dummy&BIT_0==0)
+					chk=dummy&BIT_0;
+						if(chk==0)
 						{
 							PORTEbits.RE0=1;
 							PORTEbits.RE1=1;
@@ -195,8 +195,8 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 							PORTSetBits(IOPORT_B, BIT_5);
 							PORTClearBits(IOPORT_C, BIT_13);
 							dummy = PORTReadBits(IOPORT_B,  BIT_0);
-							
-							if(dummy&BIT_0==0)
+							chk=dummy&BIT_0;
+							if(chk==0)
 							{
 								PORTEbits.RE0=0;
 								PORTEbits.RE1=1;
@@ -215,7 +215,7 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 					PORTEbits.RE0=1;
 					PORTEbits.RE1=0;
 					PORTEbits.RE2=0;
-					PORTEbits.RE2=1;
+					PORTEbits.RE3=1;
 		    	#endif
 		    	
 		    	//button(BIT_1);
@@ -225,15 +225,29 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 					PORTEbits.RE0=1;
 					PORTEbits.RE1=1;
 					PORTEbits.RE2=0;
-					PORTEbits.RE2=0;
+					PORTEbits.RE3=0;
 		    	#endif
 		    	
 		    	//button(BIT_2);
 		    }
+		 else{
+		 	#ifdef TEST
+					PORTEbits.RE0=0;
+					PORTEbits.RE1=0;
+					PORTEbits.RE2=0;
+					PORTEbits.RE3=0;
+		    #endif
+		 }
 
   
+  	if(INTGetEnable(INT_CN)){
+  		PORTEbits.RE0=0;
+		PORTEbits.RE1=0;
+		PORTEbits.RE2=0;
+		PORTEbits.RE3=0;	
+   	}
    	   
-  	INTEnable(INT_CN,INT_ENABLED);
+  	INTEnable(INT_CN,1);
     // additional processing here...
 
  }

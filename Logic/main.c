@@ -94,7 +94,8 @@ uint8 getNext(uint8 index);
 #pragma config BWP      = OFF           // Boot Flash Write Protect
 #pragma config PWP      = OFF           // Program Flash Write Protect
 #pragma config ICESEL   = ICS_PGx2      // ICE/ICD Comm Channel Select
-#pragma config DEBUG    = ON           // Debugger nabled for Starter Kit
+#pragma config DEBUG    = OFF           // Debugger nabled for Starter Kit
+//#pragma config JTAGEN   = OFF
 
 
 
