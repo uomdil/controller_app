@@ -1,0 +1,98 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\GSM.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File001]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\main.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File002]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\NFC.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File003]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\keys.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File004]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\UART.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File005]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\controller.elf
+Folder=Output
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Map="$(BINDIR_)$(TARGETBASE).map"
+TraceCmdString=
+DebugOptions=--defsym=__MPLAB_DEBUG=1
+[File006]
+Location=C:\Users\Dilshan\Dropbox\FYP\Ongoing work\Controller\MPLAB_codes\V1.0\controller.hex
+Folder=Output
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|physical;include||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|Logic\GSM.c|Logic\main.c|Logic\NFC.c|Physical\keys.c|Physical\UART.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Map="$(BINDIR_)$(TARGETBASE).map"
+TraceCmdString=
+DebugOptions=--defsym=__MPLAB_DEBUG=1
+[TOOL_LOC_STAMPS]
+tool_loc{92E15EC6-5E91-4BF4-B5FA-C80AD2601AA7}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-as.exe
+tool_loc{430F471F-7ECB-4852-A80D-DEF9A5C8E751}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+tool_loc{C68E5105-1196-4333-A0BF-3DC57271E614}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
