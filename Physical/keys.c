@@ -51,7 +51,6 @@
 */ 
 
 uint32 dummy;
-uint8 state=0x00;
 
 /* 
 ********************************************************************************************************* 
@@ -70,14 +69,13 @@ void button(uint32 BIT_X);
 	
 void keypad_init(){
 	#ifdef TEST
-		PORTSetPinsDigitalOut(IOPORT_E, BIT_0 | BIT_1|BIT_2 );
-		PORTSetBits(IOPORT_E, BIT_0 | BIT_1|BIT_2);
+		PORTSetPinsDigitalOut(IOPORT_E, BIT_0 | BIT_1|BIT_2|BIT_3 );
+		PORTSetBits(IOPORT_E, BIT_0 | BIT_1|BIT_2|BIT_3);
 	#endif
 	
 	PORTClearBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);
 	PORTClearBits(IOPORT_C, BIT_13);
 	
-
 	PORTSetPinsDigitalIn(IOPORT_B, BIT_0 | BIT_1| BIT_2);
 	PORTSetPinsDigitalOut(IOPORT_B, BIT_3| BIT_4 |BIT_5);
 	PORTSetPinsDigitalOut(IOPORT_C, BIT_13);	
@@ -103,7 +101,7 @@ void keypad_init(){
 ******************************************************************************/ 
 void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 {
-	
+	uint16 x=0;
 	INTEnable(INT_CN,INT_DISABLED);
 	
     // Step #1 - always clear the mismatch condition first
@@ -112,16 +110,10 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
     // Step #2 - then clear the interrupt flag
     mCNClearIntFlag();
     
+   x++;
    
      // Step #3 - process the switches
-    
-	/*mPORTBOpenDrainClose(BIT_3);       // Disable open drain (High impedance) 
-	mPORTBOpenDrainClose(BIT_4);       // Disable open drain (High impedance)     
-    mPORTBOpenDrainClose(BIT_5);       // Disable open drain (High impedance)
-    mPORTCOpenDrainClose(BIT_13);      // Disable open drain (High impedance) 
-     */
-    
-         
+     
     unsigned int sw1 = dummy&BIT_0;
     unsigned int sw2 = dummy&BIT_1;
     unsigned int sw3 = dummy&BIT_2;
@@ -144,95 +136,100 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl2) ChangeNotice_Handler(void)
 		    
 	    }
     }
+    x++;
+    
     
     PORTSetBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);
 	PORTSetBits(IOPORT_C, BIT_13);
-
+    
     	if(but1>5)
 	    	{
 		    	#ifdef TEST
-				PORTClearBits(IOPORT_E, BIT_0);
-				PORTSetBits(IOPORT_E, BIT_1|BIT_2);
-				#endif	
-				//TRISBbits.TRISB3=0;                         // Direction: output 
-				PORTBbits.RB3=0;  
-				dummy = PORTReadBits(IOPORT_B,  BIT_0);                           // state: off 
-				if(dummy&BIT_0==0)
-				{
-					PORTEbits.RE0=0 ;
+					PORTEbits.RE0=0;
 					PORTEbits.RE1=1;
 					PORTEbits.RE2=1;
+					PORTEbits.RE3=1;
+				#endif	
+				x++;
+				
+							
+				PORTClearBits(IOPORT_B, BIT_3);
+				dummy = PORTReadBits(IOPORT_B,  BIT_0);
+				
+				if(dummy&BIT_0==0)
+				{
+					PORTEbits.RE0=1;
+					PORTEbits.RE1=0;
+					PORTEbits.RE2=1;
+					PORTEbits.RE3=1;
 				}
 				else
-				{ 	
-					PORTBbits.RB3=1;
-					//TRISBbits.TRISB3=1;
-					//mPORTBOpenDrainClose(BIT_3);       // Disable open drain (High impedance) 
-					//mPORTBOpenDrainOpen(BIT_4);     // Enable Open drain	
-					//TRISBbits.TRISB4=0;                         // Direction: output 
-					PORTBbits.RB4=0;                             // state: off 
-					dummy = PORTReadBits(IOPORT_B,  BIT_0); 
+				{				
+					
+					PORTSetBits(IOPORT_B, BIT_3);
+					PORTClearBits(IOPORT_B, BIT_4);
+					dummy = PORTReadBits(IOPORT_B,  BIT_0);
+					
 					if(dummy&BIT_0==0)
 					{
-						PORTEbits.RE0=1 ;
+						PORTEbits.RE0=0;
 						PORTEbits.RE1=0;
 						PORTEbits.RE2=1;
-					}
-					else 
+						PORTEbits.RE3=1;										
+					}	
+					else
 					{
-						PORTBbits.RB4=1;
-						//TRISBbits.TRISB4=1;
-						//mPORTBOpenDrainClose(BIT_4);       // Disable open drain (High impedance)
-						//mPORTBOpenDrainOpen(BIT_5);     // Enable Open drain 
-						//TRISBbits.TRISB5=0;                         // Direction: output 
-						PORTBbits.RB5=0;                             // state: off 
-						dummy = PORTReadBits(IOPORT_B,  BIT_0); 
+					PORTSetBits(IOPORT_B, BIT_4);
+					PORTClearBits(IOPORT_B, BIT_5);
+					dummy = PORTReadBits(IOPORT_B,  BIT_0);
+					
 						if(dummy&BIT_0==0)
 						{
-							PORTEbits.RE0=0 ;
-							PORTEbits.RE1=0;
-							PORTEbits.RE2=1; 
+							PORTEbits.RE0=1;
+							PORTEbits.RE1=1;
+							PORTEbits.RE2=0;
+							PORTEbits.RE3=1;										
 						}	
-						else 
+						else
 						{
-							PORTBbits.RB5=1;
-							//TRISBbits.TRISB5=1;
-							//mPORTBOpenDrainClose(BIT_5);       // Disable open drain (High impedance)
-							//mPORTCOpenDrainOpen(BIT_13);     // Enable Open drain
-							//TRISCbits.TRISC13=0;                         // Direction: output 
-							PORTCbits.RC13=0;                             // state: off 
-							dummy = PORTReadBits(IOPORT_B,  BIT_0); 
+							PORTSetBits(IOPORT_B, BIT_5);
+							PORTClearBits(IOPORT_C, BIT_13);
+							dummy = PORTReadBits(IOPORT_B,  BIT_0);
+							
 							if(dummy&BIT_0==0)
 							{
-								PORTEbits.RE0=1 ;
+								PORTEbits.RE0=0;
 								PORTEbits.RE1=1;
-								PORTEbits.RE2=0; 
-							}
-							PORTCbits.RC13=1;  
-							//TRISCbits.TRISC13=1; 
-							//mPORTCOpenDrainClose(BIT_13);       // Disable open drain (High impedance) 
+								PORTEbits.RE2=0;
+								PORTEbits.RE3=1;										
+							}	
+							PORTSetBits(IOPORT_C, BIT_13);
 						}
-					}	
-				}	
+					}
+				}						
 					
 		   	 }
 		   	 
-		/* else if(but2>5){
+		 else if(but2>5){
 			    #ifdef TEST
-				PORTClearBits(IOPORT_E, BIT_1);
-				PORTSetBits(IOPORT_E, BIT_0|BIT_2);
+					PORTEbits.RE0=1;
+					PORTEbits.RE1=0;
+					PORTEbits.RE2=0;
+					PORTEbits.RE2=1;
 		    	#endif
 		    	
 		    	//button(BIT_1);
 		    }
 		 else if(but3>5){
 			    #ifdef TEST
-				PORTClearBits(IOPORT_E, BIT_2);
-				PORTSetBits(IOPORT_E, BIT_1|BIT_0);
+					PORTEbits.RE0=1;
+					PORTEbits.RE1=1;
+					PORTEbits.RE2=0;
+					PORTEbits.RE2=0;
 		    	#endif
 		    	
 		    	//button(BIT_2);
-		    }*/
+		    }
 
   
    	   
