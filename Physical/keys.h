@@ -53,7 +53,7 @@
 
 
 //setting for change notice interrupts 
-#define CONFIG          (CN_ON)
+#define CONFIG          (CN_OFF)
 #define PINS            (CN2_ENABLE | CN3_ENABLE | CN4_ENABLE)
 #define PULLUPS         (CN2_PULLUP_ENABLE | CN3_PULLUP_ENABLE | CN4_PULLUP_ENABLE)
 #define INTERRUPT       (CHANGE_INT_ON | CHANGE_INT_PRI_2)
@@ -92,7 +92,34 @@
 */ 
 
     
-	
+#define select_key(ROWX)	ALL_SET\
+							PORTClearBits(IOPORT_B,COL1);\
+							unsigned int dummy = PORTReadBits(IOPORT_B, ROWX);\
+							unsigned int chk = dummy&ROWX;\
+							if(chk==0){\
+								hal_sendString_UART1("but1");\
+							}\
+							ALL_SET\
+							PORTClearBits(IOPORT_B,COL2);\
+							dummy = PORTReadBits(IOPORT_B,  ROWX);\
+							chk = dummy&ROWX;\
+							if(chk==0){\
+								hal_sendString_UART1("but2");\
+							}\
+							ALL_SET\
+							PORTClearBits(IOPORT_B,COL3);\
+							dummy = PORTReadBits(IOPORT_B,  ROWX);\
+							chk = dummy&ROWX;\
+							if(chk==0){\
+								hal_sendString_UART1("but3");\
+							}\
+							ALL_SET\
+							PORTClearBits(IOPORT_C,COL4);\
+							dummy = PORTReadBits(IOPORT_B,  ROWX);\
+							chk = dummy&ROWX;\
+							if(chk==0){\
+								hal_sendString_UART1("but4");\
+							}
 
 
 
@@ -103,6 +130,7 @@
 */ 
 
 void keypad_init();
+void keypad_pole();
 
 /* 
 ********************************************************************************************************* 

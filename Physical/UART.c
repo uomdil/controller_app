@@ -74,7 +74,7 @@ void hal_uartWriteNumber(unsigned int no){
 	}
 
 	for(;i>0;i--){
-		hal_sendChar_UART2(val[i]);
+		hal_sendChar_UART1(val[i]);
 	}		
 }
 

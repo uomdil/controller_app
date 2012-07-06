@@ -110,7 +110,7 @@ uint8 getNext(uint8 index);
 int main(void)
 {
 	board_init();
-	keypad_init();
+	
   	//changeState(START);
   	while(1){
     	/*uint8 nextEvent = deque();
@@ -120,13 +120,19 @@ int main(void)
       		#endif
      		stateMachine(nextEvent);
     	}*/
+		keypad_pole();	
   	}
 	
 }
 
 
 void board_init(){
-  
+	DDPCONbits.JTAGEN = 0;
+	DBINIT();     // Initialize the IO channel
+  	hal_allUARTInit();
+  	keypad_init();
+	hal_sendString_UART1("started");
+	//INTEnableInterrupts();
 }
 
 
@@ -480,3 +486,8 @@ uint8 getNext(uint8 index){
       return ++index;
     }
 }
+
+
+
+
+
