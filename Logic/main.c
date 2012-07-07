@@ -42,7 +42,8 @@
 ********************************************************************************************************* 
 */ 
 
-
+#define PRODUCT 1
+#define AMOUNT 2
 
 
 /* 
@@ -56,6 +57,15 @@ uint8 g_EventQueue[NO_OF_EVENTS];
 int queueHead;
 int queueTail;
 
+uint8 count=0;
+
+uint8 keyuse;
+
+uint32 product_no=0;
+uint32 amount=0;
+
+
+
 /* 
 ********************************************************************************************************* 
 *                                        FUNCTION PROTOTYPES 
@@ -66,7 +76,6 @@ void board_init();
 void stateMachine(uint8 eventId);
 void changeState(uint8 nextStateId);
 void onStateExit(uint8 stateId);
-uint8 enque(uint8 eventId);
 uint8 deque();
 void onStateEntry(uint8 stateId);
 uint8 getNext(uint8 index);
@@ -110,19 +119,27 @@ uint8 getNext(uint8 index);
 int main(void)
 {
 	board_init();
-	
-  	//changeState(START);
+  	changeState(START);
+  	enque(DIAGNOSTIC);
   	while(1){
-    	/*uint8 nextEvent = deque();
-    	if(nextEvent){
+    	uint8 nextEvent = deque();
+    	if(nextEvent)
+	    {
 	    	#ifdef SHOW_MESSAGES
-      		//uartWrite("APP:state:",10);
+	    		hal_sendString_UART1("Machine started");
       		#endif
      		stateMachine(nextEvent);
-    	}*/
-		keypad_pole();	
-  	}
-	
+    	}
+    	
+    	if(keyuse==(uint8)PRODUCT)
+     	{
+     			keypad_pole();
+     	}
+     	else if(keyuse==(uint8)AMOUNT)
+     	{
+     			keypad_pole();	
+     	}	
+  	}	
 }
 
 
@@ -131,8 +148,6 @@ void board_init(){
 	DBINIT();     // Initialize the IO channel
   	hal_allUARTInit();
   	keypad_init();
-	hal_sendString_UART1("started");
-	//INTEnableInterrupts();
 }
 
 
@@ -148,6 +163,8 @@ void stateMachine(uint8 eventId){
     
     case DIAGNOSTIC:
       	if(eventId == (uint8)INIT_VARS){
+	      	enque(CASH_IN);  	//for test only
+	      	enque(PRODUCT_NO); 	//for test only
     	    changeState(INIT);  
     	}    
     	else if(eventId == (uint8)ERROR){	    	
@@ -204,15 +221,20 @@ void stateMachine(uint8 eventId){
     
     case WAIT_PRODUCT:
       	if(eventId == (uint8)OK){
-    	    changeState(WAIT_PRODUCT);  
+    	    changeState(WAIT_AMOUNT);  
     	}    
     	else if(eventId == (uint8)ENTER_NO){
+	    	check_key()
+	    	if(count<2){
+		 		product_no=product_no*10+key;
+		 		//write to LCD
+		 	}
     	}
     	else if(eventId == (uint8)CANCEL){
 	    	enque(INIT_VARS);
 	    	changeState(RETURN_MONEY);
     	}
-    	else if(eventId == (uint8)WRONG){	
+    	else if(eventId == (uint8)WRONG){
 	    	changeState(WAIT_MONEY);
     	}
       
@@ -220,9 +242,18 @@ void stateMachine(uint8 eventId){
     
     case WAIT_AMOUNT:
     	if(eventId == (uint8)OK){
+	    	PORTEbits.RE2=0;
     	    changeState(BALANCE);  
     	}    
     	else if(eventId == (uint8)ENTER_NO){
+	    	check_key()
+	    	if(count<2){
+		 		amount=amount*10+key;
+		 		//write to LCD
+		 	}
+    	}
+    	else if(eventId == (uint8)CANCEL){
+	    	changeState(WAIT_AMOUNT);
     	}
     
      break;
@@ -318,38 +349,39 @@ void onStateEntry(uint8 stateId){
     case DIAGNOSTIC:
       
 	
-      break;
+    break;
     
     case INIT:
       
  
     
-      break;
+    break;
     
     case UPDATE_VARS :
       
    
-      break;
+    break;
     
     case WAIT_MONEY:
-      
     
-      break;
+    
+    break;
     
     case WAIT_PRODUCT:
+    count=0; 
+    keyuse=PRODUCT;     
       
-     
-      
-      break;
+    break;
     
     case WAIT_AMOUNT:
-     
+    keyuse==AMOUNT; 
+    count=0; 
     
-      break;
+    break;
     
     case BALANCE:
     
-      break;
+    break;
       
     case DISPENSE:
       
@@ -408,15 +440,16 @@ void onStateExit(uint8 stateId){
       break;
     
     case WAIT_PRODUCT:
+    keyuse=0;
+	count=0; 
       
-     
-      
-      break;
+    break;
     
     case WAIT_AMOUNT:
-     
+    keyuse=0;
+	count=0;
     
-      break;
+    break;
     
     case BALANCE:
     

@@ -80,8 +80,7 @@
 ********************************************************************************************************* 
 */ 
 
-
-
+uint32 key;
 
 
 
@@ -92,34 +91,76 @@
 */ 
 
     
-#define select_key(ROWX)	ALL_SET\
-							PORTClearBits(IOPORT_B,COL1);\
-							unsigned int dummy = PORTReadBits(IOPORT_B, ROWX);\
-							unsigned int chk = dummy&ROWX;\
-							if(chk==0){\
-								hal_sendString_UART1("but1");\
-							}\
-							ALL_SET\
-							PORTClearBits(IOPORT_B,COL2);\
-							dummy = PORTReadBits(IOPORT_B,  ROWX);\
-							chk = dummy&ROWX;\
-							if(chk==0){\
-								hal_sendString_UART1("but2");\
-							}\
-							ALL_SET\
-							PORTClearBits(IOPORT_B,COL3);\
-							dummy = PORTReadBits(IOPORT_B,  ROWX);\
-							chk = dummy&ROWX;\
-							if(chk==0){\
-								hal_sendString_UART1("but3");\
-							}\
-							ALL_SET\
-							PORTClearBits(IOPORT_C,COL4);\
-							dummy = PORTReadBits(IOPORT_B,  ROWX);\
-							chk = dummy&ROWX;\
-							if(chk==0){\
-								hal_sendString_UART1("but4");\
+#define select_key(ROWX)	ALL_SET												\
+							PORTClearBits(IOPORT_B,COL1);						\
+							unsigned int dummy = PORTReadBits(IOPORT_B, ROWX);	\
+							unsigned int chk = dummy&ROWX;						\
+							if(chk==0){											\
+								enque(ENTER_NO);								\
+								hal_sendString_UART1("but1");					\
+								switch(ROWX){									\
+									case ROW1:key=0;break;						\
+									case ROW2:key=4;break;						\
+									case ROW3:key=8;break;						\
+								}												\
+							}													\
+							ALL_SET												\
+							PORTClearBits(IOPORT_B,COL2);						\
+							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
+							chk = dummy&ROWX;									\
+							if(chk==0){											\
+								enque(ENTER_NO);								\
+								hal_sendString_UART1("but2");					\
+								switch(ROWX){									\
+									case ROW1:key=1;break;						\
+									case ROW2:key=5;break;						\
+									case ROW3:key=9;break;						\
+								}												\
+							}													\
+							ALL_SET												\
+							PORTClearBits(IOPORT_B,COL3);						\
+							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
+							chk = dummy&ROWX;									\
+							if(chk==0){											\
+								enque(ENTER_NO);								\
+								hal_sendString_UART1("but3");					\
+								switch(ROWX){									\
+									case ROW1:key=2;break;						\
+									case ROW2:key=6;break;						\
+									case ROW3:key=10;break;						\
+								}												\
+							}													\
+							ALL_SET												\
+							PORTClearBits(IOPORT_C,COL4);						\
+							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
+							chk = dummy&ROWX;									\
+							if(chk==0){											\
+								enque(ENTER_NO);								\
+								hal_sendString_UART1("but4");					\
+								switch(ROWX){									\
+									case ROW1:key=3;break;						\
+									case ROW2:key=7;break;						\
+									case ROW3:key=11;break;						\
+								}												\
 							}
+
+
+#define check_key() switch(key){			\
+				case 0:count++;break;		\
+				case 1:count++;break;		\
+				case 2:count++;break;		\
+				case 3:count++;break;		\
+				case 4:count++;break;		\
+				case 5:count++;break;		\
+				case 6:count++;break;		\
+				case 7:count++;break;		\
+				case 8:count++;break;		\
+				case 9:count++;break;		\
+				case 10:enque(OK);break;	\
+				case 11:enque(CANCEL);break;\
+			}
+
+
 
 
 

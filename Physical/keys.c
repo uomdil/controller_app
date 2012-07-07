@@ -42,7 +42,7 @@
 */ 
 
 
-#define TEST ;
+#define TEST 
 #define COL1	BIT_3
 #define COL2	BIT_4
 #define	COL3	BIT_5
@@ -54,6 +54,10 @@
 
 #define ALL_SET PORTSetBits(IOPORT_B, COL1 | COL2 | COL3);\
 				PORTSetBits(IOPORT_C, COL4);			  \
+
+#define ALL_CLEAR 	PORTClearBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);\
+					PORTClearBits(IOPORT_C, BIT_13);
+
 
 /* 
 ********************************************************************************************************* 
@@ -80,8 +84,10 @@ void button(uint32 BIT_X);
 	
 void keypad_init(){
 	
-	PORTClearBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);
-	PORTClearBits(IOPORT_C, BIT_13);
+	ALL_CLEAR
+	
+	PORTSetPinsDigitalOut(IOPORT_E, BIT_0 | BIT_1| BIT_2);
+	PORTSetBits(IOPORT_E, BIT_0 | BIT_1| BIT_2);
 	
 	PORTSetPinsDigitalIn(IOPORT_B, BIT_0 | BIT_1| BIT_2);
 	PORTSetPinsDigitalOut(IOPORT_B, BIT_3| BIT_4 |BIT_5);
@@ -275,8 +281,8 @@ void keypad_init(){
 void keypad_pole()
 {
 	 unsigned int dummy = PORTReadBits(IOPORT_B,  BIT_0 | BIT_1 | BIT_2);
-	 
-	 // Step #3 - process the switches
+
+	 // process the switches
      
     unsigned int sw1;
     unsigned int sw2;
@@ -306,7 +312,6 @@ void keypad_pole()
 	    else{
 		    
 	    }
-	    
     }
 	 
 	type = 0;
@@ -327,37 +332,36 @@ void keypad_pole()
    	if(type==1&&done)
    	{
 	   	done=0;
-   	
+   		
     	#ifdef TEST
 			hal_sendString_UART1("row1");
 		#endif	
-			
+		
+		select_key(ROW1);	
 		
 	 }
 	 else if(type==2&&done){
 		done=0;
 	    #ifdef TEST
 			hal_sendString_UART1("row2");
-    	#endif
-			
-	
-
+    	#endif	
+    		
+		select_key(ROW2);
+		
 	}
 	 else if(type==3&&done){
 		done=0;
 	    #ifdef TEST
 			hal_sendString_UART1("row3");
-    	#endif
+    	#endif		
+    	
+		select_key(ROW3);
 		
 	}
 	else if(type==0){
 		done=1;
-	}
-	
-	PORTClearBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);
-	PORTClearBits(IOPORT_C, BIT_13);
-	 
-
+	}	
+	ALL_CLEAR 
 }
 
 
