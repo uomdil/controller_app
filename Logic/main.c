@@ -57,12 +57,12 @@ uint8 g_EventQueue[NO_OF_EVENTS];
 int queueHead;
 int queueTail;
 
-uint8 count=0;
+uint8 count=0;  					//count pressing keys
 
-uint8 keyuse;
+uint8 keyuse;						//keypad mode: either entering product no or 
 
-uint32 product_no=0;
-uint32 amount=0;
+uint32 product_no=0;				//to store entered product no
+uint32 amount=0;					//to store entered prosuct amount
 
 
 
@@ -131,11 +131,11 @@ int main(void)
      		stateMachine(nextEvent);
     	}
     	
-    	if(keyuse==(uint8)PRODUCT)
+    	if(keyuse ==(uint8)PRODUCT)
      	{
      			keypad_pole();
      	}
-     	else if(keyuse==(uint8)AMOUNT)
+     	else if(keyuse ==(uint8)AMOUNT)
      	{
      			keypad_pole();	
      	}	
@@ -221,11 +221,12 @@ void stateMachine(uint8 eventId){
     
     case WAIT_PRODUCT:
       	if(eventId == (uint8)OK){
+	      	PORTEbits.RE1=0;
     	    changeState(WAIT_AMOUNT);  
     	}    
     	else if(eventId == (uint8)ENTER_NO){
 	    	check_key()
-	    	if(count<2){
+	    	if(count<2 && key<10){
 		 		product_no=product_no*10+key;
 		 		//write to LCD
 		 	}
@@ -247,7 +248,7 @@ void stateMachine(uint8 eventId){
     	}    
     	else if(eventId == (uint8)ENTER_NO){
 	    	check_key()
-	    	if(count<2){
+	    	if(count<2 && key<10){	
 		 		amount=amount*10+key;
 		 		//write to LCD
 		 	}
@@ -440,7 +441,6 @@ void onStateExit(uint8 stateId){
       break;
     
     case WAIT_PRODUCT:
-    keyuse=0;
 	count=0; 
       
     break;
