@@ -42,8 +42,8 @@
 ********************************************************************************************************* 
 */ 
 
-#define PRODUCT 1
-#define AMOUNT 2
+#define PRODUCT 1	//use keys for product select
+#define AMOUNT 2	//use keys to select number of products
 
 
 /* 
@@ -52,6 +52,8 @@
 ********************************************************************************************************* 
 */ 
 
+
+//queue management
 uint8 state;
 uint8 g_EventQueue[NO_OF_EVENTS];
 int queueHead;
@@ -80,6 +82,7 @@ uint8 deque();
 void onStateEntry(uint8 stateId);
 uint8 getNext(uint8 index);
 
+
 /* 
 ********************************************************************************************************* 
 *                                        CONFIGURATION BITS 
@@ -104,7 +107,7 @@ uint8 getNext(uint8 index);
 #pragma config PWP      = OFF           // Program Flash Write Protect
 #pragma config ICESEL   = ICS_PGx2      // ICE/ICD Comm Channel Select
 #pragma config DEBUG    = OFF           // Debugger nabled for Starter Kit
-//#pragma config JTAGEN   = OFF
+
 
 
 
@@ -118,24 +121,25 @@ uint8 getNext(uint8 index);
 
 int main(void)
 {
-	board_init();
-  	changeState(START);
-  	enque(DIAGNOSTIC);
+	board_init();												//Initialize the circuit board configurations
+  	changeState(START);											//Initialize the state
+  	enque(DIAGNOSTIC);											//first do diagnostic
+  	
   	while(1){
-    	uint8 nextEvent = deque();
+    	uint8 nextEvent = deque();								//get next event
     	if(nextEvent)
 	    {
 	    	#ifdef SHOW_MESSAGES
 	    		hal_sendString_UART1("Machine started");
       		#endif
-     		stateMachine(nextEvent);
+     		stateMachine(nextEvent);							//enter the event functions
     	}
     	
-    	if(keyuse ==(uint8)PRODUCT)
+    	if(keyuse ==(uint8)PRODUCT)								//check key press for product selection
      	{
      			keypad_pole();
      	}
-     	else if(keyuse ==(uint8)AMOUNT)
+     	else if(keyuse ==(uint8)AMOUNT)							//check key press for amount selection
      	{
      			keypad_pole();	
      	}	
@@ -144,10 +148,10 @@ int main(void)
 
 
 void board_init(){
-	DDPCONbits.JTAGEN = 0;
-	DBINIT();     // Initialize the IO channel
-  	hal_allUARTInit();
-  	keypad_init();
+	DDPCONbits.JTAGEN = 0;										//disable JTAG
+	DBINIT();     												// Initialize the IO channel
+  	hal_allUARTInit();											//Initialize all UARTs
+  	keypad_init();												//Initialize keypad
 }
 
 
@@ -163,8 +167,8 @@ void stateMachine(uint8 eventId){
     
     case DIAGNOSTIC:
       	if(eventId == (uint8)INIT_VARS){
-	      	enque(CASH_IN);  	//for test only
-	      	enque(PRODUCT_NO); 	//for test only
+	      	enque(CASH_IN);  			//for test only
+	      	enque(PRODUCT_NO); 			//for test only
     	    changeState(INIT);  
     	}    
     	else if(eventId == (uint8)ERROR){	    	
@@ -232,10 +236,12 @@ void stateMachine(uint8 eventId){
 		 	}
     	}
     	else if(eventId == (uint8)CANCEL){
+	    	product_no=0;
 	    	enque(INIT_VARS);
 	    	changeState(RETURN_MONEY);
     	}
     	else if(eventId == (uint8)WRONG){
+	    	product_no=0;
 	    	changeState(WAIT_MONEY);
     	}
       
@@ -254,6 +260,7 @@ void stateMachine(uint8 eventId){
 		 	}
     	}
     	else if(eventId == (uint8)CANCEL){
+	    	amount=0;
 	    	changeState(WAIT_AMOUNT);
     	}
     

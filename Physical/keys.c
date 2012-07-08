@@ -52,11 +52,17 @@
 #define ROW2	BIT_1
 #define	ROW3	BIT_2
 
-#define ALL_SET PORTSetBits(IOPORT_B, COL1 | COL2 | COL3);\
-				PORTSetBits(IOPORT_C, COL4);			  \
+#define ALL_SET PORTSetBits(IOPORT_B, COL1| COL2 |COL3);\
+				PORTSetBits(IOPORT_C, COL4);			\
+				mPORTBOpenDrainOpen(COL1| COL2 |COL3);	\
+				mPORTCOpenDrainOpen(COL4);			  	
 
-#define ALL_CLEAR 	PORTClearBits(IOPORT_B, BIT_3| BIT_4 |BIT_5);\
-					PORTClearBits(IOPORT_C, BIT_13);
+#define ALL_CLEAR 	mPORTBOpenDrainClose(COL1| COL2 |COL3);				\
+					mPORTCOpenDrainClose(COL4);			   				\
+					PORTSetPinsDigitalOut(IOPORT_B, COL1| COL2 |COL3);	\
+					PORTSetPinsDigitalOut(IOPORT_C, COL4);				\
+					PORTClearBits(IOPORT_B, COL1| COL2 |COL3);			\
+					PORTClearBits(IOPORT_C, COL4);
 
 
 /* 
@@ -84,7 +90,8 @@ void button(uint32 BIT_X);
 	
 void keypad_init(){
 	
-	ALL_CLEAR
+	PORTClearBits(IOPORT_B, COL1| COL2 |COL3);\
+	PORTClearBits(IOPORT_C, COL4);
 	
 	PORTSetPinsDigitalOut(IOPORT_E, BIT_0 | BIT_1| BIT_2);
 	PORTSetBits(IOPORT_E, BIT_0 | BIT_1| BIT_2);
@@ -280,7 +287,8 @@ void keypad_init(){
 
 void keypad_pole()
 {
-	 unsigned int dummy = PORTReadBits(IOPORT_B,  BIT_0 | BIT_1 | BIT_2);
+	
+	unsigned int dummy = PORTReadBits(IOPORT_B,  BIT_0 | BIT_1 | BIT_2);
 
 	 // process the switches
      

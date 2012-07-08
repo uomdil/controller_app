@@ -92,6 +92,8 @@ uint32 key;
 
     
 #define select_key(ROWX)	ALL_SET												\
+							mPORTBOpenDrainClose(COL1);							\
+							PORTSetPinsDigitalOut(IOPORT_B, COL1);				\
 							PORTClearBits(IOPORT_B,COL1);						\
 							unsigned int dummy = PORTReadBits(IOPORT_B, ROWX);	\
 							unsigned int chk = dummy&ROWX;						\
@@ -105,6 +107,8 @@ uint32 key;
 								}												\
 							}													\
 							ALL_SET												\
+							mPORTBOpenDrainClose(COL2);							\
+							PORTSetPinsDigitalOut(IOPORT_B, COL2);				\
 							PORTClearBits(IOPORT_B,COL2);						\
 							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
 							chk = dummy&ROWX;									\
@@ -118,6 +122,8 @@ uint32 key;
 								}												\
 							}													\
 							ALL_SET												\
+							mPORTBOpenDrainClose(COL3);							\
+							PORTSetPinsDigitalOut(IOPORT_B, COL3);				\
 							PORTClearBits(IOPORT_B,COL3);						\
 							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
 							chk = dummy&ROWX;									\
@@ -131,6 +137,8 @@ uint32 key;
 								}												\
 							}													\
 							ALL_SET												\
+							mPORTCOpenDrainClose(COL4);							\
+							PORTSetPinsDigitalOut(IOPORT_C, COL4);				\
 							PORTClearBits(IOPORT_C,COL4);						\
 							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
 							chk = dummy&ROWX;									\

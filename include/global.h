@@ -48,6 +48,16 @@
 ********************************************************************************************************* 
 */ 
 
+
+//for debug
+#define DEBUG
+
+
+//for console
+#define SHOW_MESSAGES
+
+
+
 //clocks
 #define SYS_FREQ 					(80000000)
 #define	GetSystemClock() 			(80000000ul)
@@ -96,7 +106,6 @@
 
 #define NO_OF_EVENTS	4
 
-#define SHOW_MESSAGES ;
 
 
 
