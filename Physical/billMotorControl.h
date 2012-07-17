@@ -1,6 +1,6 @@
 /*
 ********************************************************************************************************* 
- *					 	keypad
+ *					 	Global header file 
  *
  * (c) Copyright 2012 D2NM, All rights reserved
 ********************************************************************************************************* 
@@ -9,9 +9,9 @@
 
 /*
 ********************************************************************************************************* 
- * 						keypad
+ * 						Vending machine controller 
  *
- * Filename      : keys.h
+ * Filename      : global.h
  * Version       : V1.0
  * Programmer(s) : DIL
  *
@@ -28,8 +28,8 @@
 ********************************************************************************************************* 
 */ 
 
-#ifndef KEYS
-#define KEYS
+#ifndef MOTOR
+#define MOTOR
  
  
  
@@ -40,9 +40,8 @@
 */ 
 
 
-#include <p32xxxx.h> 			// include chip specific header file
-#include <plib.h>                   // include peripheral library function
 #include "global.h"
+
 
 
 /* 
@@ -51,12 +50,18 @@
 ********************************************************************************************************* 
 */ 
 
+#define CLOCKWISE 		1
+#define ANTICLOCKWISE 	2
+#define STOP 			3
 
-//setting for change notice interrupts 
-#define CONFIG          (CN_OFF)
-#define PINS            (CN2_ENABLE | CN3_ENABLE | CN4_ENABLE)
-#define PULLUPS         (CN2_PULLUP_ENABLE | CN3_PULLUP_ENABLE | CN4_PULLUP_ENABLE)
-#define INTERRUPT       (CHANGE_INT_ON | CHANGE_INT_PRI_2)
+
+/* 
+********************************************************************************************************* 
+*                                               DATA TYPES 
+********************************************************************************************************* 
+*/ 
+
+
 
 
 /* 
@@ -72,9 +77,6 @@
 ********************************************************************************************************* 
 */ 
 
-uint32 key;
-
-
 
 /* 
 ********************************************************************************************************* 
@@ -82,92 +84,18 @@ uint32 key;
 ********************************************************************************************************* 
 */ 
 
-    
-#define select_key(ROWX)	ALL_SET												\
-							mPORTBOpenDrainClose(COL1);							\
-							PORTSetPinsDigitalOut(IOPORT_B, COL1);				\
-							PORTClearBits(IOPORT_B,COL1);						\
-							unsigned int dummy = PORTReadBits(IOPORT_B, ROWX);	\
-							unsigned int chk = dummy&ROWX;						\
-							if(chk==0){											\
-								enque(ENTER_NO);								\
-								switch(ROWX){									\
-									case ROW1:key=0;break;						\
-									case ROW2:key=4;break;						\
-									case ROW3:key=8;break;						\
-								}												\
-							}													\
-							ALL_SET												\
-							mPORTBOpenDrainClose(COL2);							\
-							PORTSetPinsDigitalOut(IOPORT_B, COL2);				\
-							PORTClearBits(IOPORT_B,COL2);						\
-							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
-							chk = dummy&ROWX;									\
-							if(chk==0){											\
-								enque(ENTER_NO);								\
-								switch(ROWX){									\
-									case ROW1:key=1;break;						\
-									case ROW2:key=5;break;						\
-									case ROW3:key=9;break;						\
-								}												\
-							}													\
-							ALL_SET												\
-							mPORTBOpenDrainClose(COL3);							\
-							PORTSetPinsDigitalOut(IOPORT_B, COL3);				\
-							PORTClearBits(IOPORT_B,COL3);						\
-							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
-							chk = dummy&ROWX;									\
-							if(chk==0){											\
-								enque(ENTER_NO);								\
-								switch(ROWX){									\
-									case ROW1:key=2;break;						\
-									case ROW2:key=6;break;						\
-									case ROW3:key=10;break;						\
-								}												\
-							}													\
-							ALL_SET												\
-							mPORTCOpenDrainClose(COL4);							\
-							PORTSetPinsDigitalOut(IOPORT_C, COL4);				\
-							PORTClearBits(IOPORT_C,COL4);						\
-							dummy = PORTReadBits(IOPORT_B,  ROWX);				\
-							chk = dummy&ROWX;									\
-							if(chk==0){											\
-								enque(ENTER_NO);								\
-								switch(ROWX){									\
-									case ROW1:key=3;break;						\
-									case ROW2:key=7;break;						\
-									case ROW3:key=11;break;						\
-								}												\
-							}
-
-
-#define check_key() switch(key){			\
-				case 0:count++;break;		\
-				case 1:count++;break;		\
-				case 2:count++;break;		\
-				case 3:count++;break;		\
-				case 4:count++;break;		\
-				case 5:count++;break;		\
-				case 6:count++;break;		\
-				case 7:count++;break;		\
-				case 8:count++;break;		\
-				case 9:count++;break;		\
-				case 10:enque(OK);break;	\
-				case 11:enque(CANCEL);break;\
-			}
-
-
-
-
-
 /* 
 ********************************************************************************************************* 
 *                                        FUNCTION PROTOTYPES 
 ********************************************************************************************************* 
 */ 
-
-void keypad_init();
-void keypad_pole();
+void intialize();
+void motorsInit();
+void motorDir(unsigned char dir);
+void motorChangeSpeed(unsigned char speed);
+double motorGetSpeed();
+void encoderInit();
+void doPID();
 
 /* 
 ********************************************************************************************************* 
@@ -183,3 +111,4 @@ void keypad_pole();
 */
 
 #endif
+

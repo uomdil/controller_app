@@ -339,11 +339,16 @@ void keypad_pole()
    	if(type==1&&done)
    	{
 	   	done=0;
-   			
+   		
+    	#ifdef DEBUG
+			hal_sendString_UART1("row1");
+			hal_sendChar_UART1('\n');
+		#endif	
+		
 		select_key(ROW1);	
 		
 		#ifdef DEBUG
-			hal_sendString_UART1("Key = ");
+			hal_sendString_UART1("Key =");
 			hal_uartWriteNumber(key);
 			hal_sendChar_UART1('\n');
 		#endif
@@ -351,22 +356,30 @@ void keypad_pole()
 	 }
 	 else if(type==2&&done){
 		done=0;
+	    #ifdef DEBUG
+			hal_sendString_UART1("row2");
+			hal_sendChar_UART1('\n');
+    	#endif	
     		
 		select_key(ROW2);
 		#ifdef DEBUG
-			hal_sendString_UART1("Key = ");
+			hal_sendString_UART1("Key =");
 			hal_uartWriteNumber(key);
 			hal_sendChar_UART1('\n');
 		#endif
 		
 	}
 	 else if(type==3&&done){
-		done=0;	
+		done=0;
+	    #ifdef DEBUG
+			hal_sendString_UART1("row3");
+			hal_sendChar_UART1('\n');
+    	#endif		
     	
 		select_key(ROW3);
 		
 		#ifdef DEBUG
-			hal_sendString_UART1("Key = ");
+			hal_sendString_UART1("Key =");
 			hal_uartWriteNumber(key);
 			hal_sendChar_UART1('\n');
 		#endif

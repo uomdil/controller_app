@@ -34,10 +34,7 @@
 #include <plib.h>                   // include peripheral library functions
 #include "global.h"
 #include "keys.h"
-//#include "billMotorControl.h"
-#include "Flash_Controller.h"
-#include "LCD.h"
-
+#include "billMotorControl.h"
 
 /* 
 ********************************************************************************************************* 
@@ -122,53 +119,19 @@ uint8 getNext(uint8 index);
 */ 
 
 
-#define DEBUG 
-
 int main(void)
 {
 	board_init();												//Initialize the circuit board configurations
   	changeState(START);											//Initialize the state
   	enque(DIAGNOSTIC);											//first do diagnostic
-  	//motorsInit();
-  	//motorDir(CLOCKWISE);
   	
-  	#ifdef SHOW_MESSAGES
-	    hal_sendString_UART1("Machine started");
-	    hal_sendChar_UART1('\n');
-    #endif
-  	
-  	INTEnableInterrupts();
-  	INTEnableSystemMultiVectoredInt();
-  	
-  	LCDInit();
-  	MPU_bus(1);
-  	Extended_instruct(1);
-  	Display(ON);
-  	Display_Clear();
-  	Entry_Mode(RIGHT,OFF);
-  		
-  	uint32 i=0;
-  	
-	while(1){
-	
-	lcdfill(0xff);
-	ShortDelay(80000);
-	lcdfill(0x55);
-	ShortDelay(80000);
-	CGRAM(); 
-    lcdwc(0x80);  
-    ShortDelay(80000);
-  	for(i=0;i<9;i++)
-     {
-       lcdwd(i);
-     }
-    ShortDelay(80000);
-	}
-
-  	/*while(1){
+  	while(1){
     	uint8 nextEvent = deque();								//get next event
     	if(nextEvent)
 	    {
+	    	#ifdef SHOW_MESSAGES
+	    		hal_sendString_UART1("Machine started");
+      		#endif
      		stateMachine(nextEvent);							//enter the event functions
     	}
   
@@ -181,7 +144,6 @@ int main(void)
      			keypad_pole();	
      	}	
   	}	
-  	*/
 }
 
 
@@ -271,11 +233,11 @@ void stateMachine(uint8 eventId){
     	}    
     	else if(eventId == (uint8)ENTER_NO){
 	    	check_key()
-	    	if(count<3 && key<10){
+	    	if(count<2 && key<10){
 		 		product_no=product_no*10+key;
 		 		//write to LCD
 		 		#ifdef DEBUG
-					hal_sendString_UART1("product no = ");
+					hal_sendString_UART1("product no =");
 					hal_uartWriteNumber(product_no);
 					hal_sendChar_UART1('\n');
 				#endif
@@ -303,11 +265,11 @@ void stateMachine(uint8 eventId){
     	}    
     	else if(eventId == (uint8)ENTER_NO){
 	    	check_key()
-	    	if(count<3 && key<10){	
+	    	if(count<2 && key<10){	
 		 		amount=amount*10+key;
 		 		//write to LCD
 		 		#ifdef DEBUG
-					hal_sendString_UART1("amount = ");
+					hal_sendString_UART1("amount =");
 					hal_uartWriteNumber(amount);
 					hal_sendChar_UART1('\n');
 				#endif

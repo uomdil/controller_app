@@ -1,6 +1,6 @@
 /*
 ********************************************************************************************************* 
- *					 	Global header file 
+ *					 	Flash Controller file 
  *
  * (c) Copyright 2012 D2NM, All rights reserved
 ********************************************************************************************************* 
@@ -11,7 +11,7 @@
 ********************************************************************************************************* 
  * 						Vending machine controller 
  *
- * Filename      : global.h
+ * Filename      : Flash_Controller.h
  * Version       : V1.0
  * Programmer(s) : DIL
  *
@@ -28,19 +28,21 @@
 ********************************************************************************************************* 
 */ 
 
-#ifndef GLOBAL
-#define GLOBAL
-   
+#ifndef FLASH
+#define FLASH
+ 
+ 
+ 
 /* 
 ********************************************************************************************************* 
 *                                            INCLUDE FILES 
 ********************************************************************************************************* 
 */ 
 
-
-//#include <p32xxxx.h>		// include chip specific header file
-#include <plib.h>           // include peripheral library functions
-
+#include <p32xxxx.h> 
+#include <plib.h>                   // include peripheral library function
+#include <stdlib.h>
+#include "global.h"
 
 /* 
 ********************************************************************************************************* 
@@ -48,91 +50,9 @@
 ********************************************************************************************************* 
 */ 
 
-
-//for debug
-#define DEBUG
-
-
-//for console
-#define SHOW_MESSAGES
-
-
-#define ON  1 
-#define OFF 0 
-
-
-//clocks
-#define SYS_FREQ 					(80000000)
-#define	GetSystemClock() 			(80000000ul)
-#define	GetPeripheralClock()		(GetSystemClock()/(1 << OSCCONbits.PBDIV))
-#define	GetInstructionClock()		(GetSystemClock())
-
-
-//define state IDs of the controller
-
-#define START				0
-#define DIAGNOSTIC			1
-#define INIT				2
-#define UPDATE_VARS			3
-#define WAIT_MONEY			4
-#define WAIT_PRODUCT		5
-#define WAIT_AMOUNT			6
-#define BALANCE				7
-#define DISPENSE			8
-#define RETURN_MONEY		9
-#define SYSTEM_LOCK			10
-#define NFC_PAY				11
-#define GSM_CONTROL			12
-
-
-
-//define event IDs for controller
-
-#define DIAGNOSE			0
-#define INIT_VARS			1
-#define UPDATE_DATA			2
-#define FIN					3
-#define MORE_DATA			4
-#define CASH_IN				5
-#define COIN_IN				6
-#define PRODUCT_NO			7
-#define OK					8
-#define CANCEL				9
-#define ENTER_NO			10
-#define TIME_OUT			11
-#define WRONG				12
-#define ERROR				13
-#define SEND_ERROR			14
-#define NFC_IN				15
-#define NFC_GET_CONFIRM		16
-#define NFC_SET_CONFIRM		17
-
-#define NO_OF_EVENTS	4
-
-
-
-
-//define true and false
-
-#ifndef false
-	#define false	0
-#endif
-#ifndef true
-	#define true 	1
-#endif
-#ifndef FALSE
-	#define FALSE	0
-#endif
-#ifndef TRUE
-	#define TRUE	1
-#endif
-#ifndef False
-	#define False	0
-#endif
-#ifndef True
-	#define True 	1
-#endif
-
+#define NVM_PROGRAM_PAGE 0xbd008000
+#define NVM_PAGE_SIZE	4096
+#define NVM_ROW_SIZE	512
 
 
 /* 
@@ -142,22 +62,12 @@
 */ 
 
 
-typedef unsigned char uint8;
-typedef signed char int8;
-typedef unsigned short int uint16;
-typedef signed short int int16;
-typedef unsigned int uint32;
-typedef signed int int32;
-typedef unsigned char bool;
-
-
 /* 
 ********************************************************************************************************* 
 *                                               EXTERNS 
 ********************************************************************************************************* 
-*/
+*/ 
 
-extern uint32 key;
 
 /* 
 ********************************************************************************************************* 
@@ -178,13 +88,33 @@ extern uint32 key;
 ********************************************************************************************************* 
 */ 
 
-uint8 enque(uint8 eventId);
+void flash_row_data(uint32* data, uint32 length);
+void flash_page_data(uint32* data, uint32 length);
 
-/* 
-********************************************************************************************************* 
-*                                        CONFIGURATION BITS 
-********************************************************************************************************* 
-*/ 
+void erase_flash_page(uint32 number);
+
+void write_flash_word(uint32 data, uint32 address);
+void write_flash_row(uint32* data, uint32 length, uint32 page, uint32 row);
+void write_flash_page(uint32* data, uint32 length, uint32 page);
+
+uint32 read_flash_word(uint32 address);
+uint32* read_flash_row(uint32 length, uint32 page, uint32 row);
+uint32* read_flash_page(uint32 length, uint32 page);
+
+
+/*Example
+erase_flash_page(0);
+uint32 name[]={1,2,3,4,5,6,7,8,9,0};
+write_flash_row(name,10,0,0);
+*/
+
+/*Example
+erase_flash_page(0);
+uint32 name=4;
+write_flash_word(name, NVM_PROGRAM_PAGE+0x200);
+hal_uartWriteNumber(read_flash_word( NVM_PROGRAM_PAGE+0x200));
+hal_sendChar_UART1('\n');
+*/
 
 
 /* 

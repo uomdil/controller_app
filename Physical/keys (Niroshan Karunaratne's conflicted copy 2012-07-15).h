@@ -91,6 +91,7 @@ uint32 key;
 							unsigned int chk = dummy&ROWX;						\
 							if(chk==0){											\
 								enque(ENTER_NO);								\
+								hal_sendString_UART1("but1");					\
 								switch(ROWX){									\
 									case ROW1:key=0;break;						\
 									case ROW2:key=4;break;						\
@@ -105,6 +106,7 @@ uint32 key;
 							chk = dummy&ROWX;									\
 							if(chk==0){											\
 								enque(ENTER_NO);								\
+								hal_sendString_UART1("but2");					\
 								switch(ROWX){									\
 									case ROW1:key=1;break;						\
 									case ROW2:key=5;break;						\
@@ -119,6 +121,7 @@ uint32 key;
 							chk = dummy&ROWX;									\
 							if(chk==0){											\
 								enque(ENTER_NO);								\
+								hal_sendString_UART1("but3");					\
 								switch(ROWX){									\
 									case ROW1:key=2;break;						\
 									case ROW2:key=6;break;						\
@@ -133,6 +136,7 @@ uint32 key;
 							chk = dummy&ROWX;									\
 							if(chk==0){											\
 								enque(ENTER_NO);								\
+								hal_sendString_UART1("but4");					\
 								switch(ROWX){									\
 									case ROW1:key=3;break;						\
 									case ROW2:key=7;break;						\
