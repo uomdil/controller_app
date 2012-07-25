@@ -37,7 +37,7 @@
 //#include "billMotorControl.h"
 #include "Flash_Controller.h"
 #include "skpic32_glcd.h"
-#include "grph.h"
+
 
 /* 
 ********************************************************************************************************* 
@@ -140,51 +140,15 @@ int main(void)
   	//INTEnableInterrupts();
   	//INTEnableSystemMultiVectoredInt();
   	
-  	//uint8 j=0;
   	
-	/*Disp_GLCDClearDisp();
-	Disp_GLCDEnableGraphics();
-	Disp_GLCDClearGraphics();	
-	Disp_GLCDFillScreenGraphic(grph);
-	DelayMs(10000);
-	Disp_GLCDClearGraphics();
-	Disp_GLCDDisableGraphics();
-	*/
-
-
-	// CGRAM
-	/*Disp_GLCDWrite(0, 0, 0x00);
-	Disp_GLCDData(0x02);
+  	SKPIC32_Init();
+	SKPIC32_GLCDInit();
+	SKPIC32_GLCDWriteText(0, 0, "Hello World!");
+	SKPIC32_GLCDWriteText(0, 1, "This is SKPIC32!");
+	SKPIC32_GLCDWriteText(0, 2, "1234567890");
+	SKPIC32_GLCDWrite(0, 3, 0x31);
+	DelayMs(2000);
 	
-	Disp_GLCDWrite(0, 1, 0x00);
-	Disp_GLCDData(0x04);
-	
-	Disp_GLCDWrite(0, 2, 0x00);
-	Disp_GLCDData(0x06);*/
-	
-	//CGROM
-	
-	/*for(j=0;j<5;j++){
-		Disp_GLCDWrite(0+j, 0, 0xA2);
-		Disp_GLCDData(0x40+j);
-	}
-	
-	for(j=5;j<10;j++){
-		Disp_GLCDWrite(0+j, 1, 0xA2);
-		Disp_GLCDData(0x40+j);
-	}*/
-		
-	/*Disp_GLCDWriteText(0, 0, "Hello World!");
-	for(j=25;j<30;j++){
-		Disp_GLCDWrite(0+j, 1, 0xA1);
-		Disp_GLCDData(0x40+j);
-	}
-	for(j=30;j<35;j++){
-		Disp_GLCDWrite(0+j, 2, 0xA1);
-		Disp_GLCDData(0x40+j);
-	}*/
-		
-	//DelayMs(2000);
 
   	while(1){
     	uint8 nextEvent = deque();								//get next event
@@ -211,9 +175,6 @@ void board_init(){
 	DBINIT();     												// Initialize the IO channel
   	hal_allUARTInit();											//Initialize all UARTs
   	keypad_init();												//Initialize keypad
-	Disp_Init();
-	Disp_GLCDInit();
-
 }
 
 
@@ -269,10 +230,6 @@ void stateMachine(uint8 eventId){
     case WAIT_MONEY:
     	if(eventId == (uint8)PRODUCT_NO){
     	    changeState(WAIT_PRODUCT);  
-    	    Disp_GLCDClearDisp();
-			DelayMs(20);
-    		Disp_GLCDWriteText(0, 0, "INSERT PRODUCT");
-    		Disp_GLCDWriteText(0, 1,"NUMBER");
     	}    
     	else if(eventId == (uint8)COIN_IN){
     	}
@@ -295,9 +252,7 @@ void stateMachine(uint8 eventId){
 				hal_sendString_UART1("Got product");
 				hal_sendChar_UART1('\n');
 			#endif
-			Disp_GLCDClearDisp();
-			DelayMs(20);
-    		Disp_GLCDWriteText(0, 0, " INSERT AMOUNT");
+			SKPIC32_GLCDClearDisp();
     	    changeState(WAIT_AMOUNT);  
     	}    
     	else if(eventId == (uint8)ENTER_NO){
@@ -305,13 +260,11 @@ void stateMachine(uint8 eventId){
 	    	if(count<3 && key<10){
 		 		product_no=product_no*10+key;
 		 		//write to LCD
-		 		Disp_GLCDClearDisp();
-		 		Disp_GLCDWriteText(0,0,"Entered Value");
-		 		DelayMs(10);
-		 		Disp_GLCDWrite(3,1,(product_no/10)+0x30);
-		 		DelayMs(10);
-		 		Disp_GLCDWrite(4,1,(product_no-(product_no/10)*10)+0x30);
-		 		DelayMs(10);
+		 		SKPIC32_GLCDClearDisp();
+		 		DelayMs(20);
+		 		char* num=(unsigned char)product_no;
+		 		SKPIC32_GLCDWriteText(count,0,num);
+		 		DelayMs(20);
 		 		#ifdef DEBUG
 					hal_sendString_UART1("product no = ");
 					hal_uartWriteNumber(product_no);
@@ -337,9 +290,7 @@ void stateMachine(uint8 eventId){
 				hal_sendString_UART1("Got amount");
 				hal_sendChar_UART1('\n');
 			#endif
-			Disp_GLCDClearDisp();
-			DelayMs(20);
-    		Disp_GLCDWriteText(1, 0, "PLEASE WAIT");
+			SKPIC32_GLCDClearDisp();
     	    changeState(BALANCE);  
     	}    
     	else if(eventId == (uint8)ENTER_NO){
@@ -347,13 +298,11 @@ void stateMachine(uint8 eventId){
 	    	if(count<3 && key<10){	
 		 		amount=amount*10+key;
 		 		//write to LCD
-		 		Disp_GLCDClearDisp();
-		 		Disp_GLCDWriteText(0,0,"Amount Entered");
-		 		DelayMs(10);
-		 		Disp_GLCDWrite(3,1,(amount/10)+0x30);
-		 		DelayMs(10);
-		 		Disp_GLCDWrite(4,1,(amount-(amount/10)*10)+0x30);
-		 		DelayMs(10);
+		 		SKPIC32_GLCDClearDisp();
+		 		DelayMs(20);
+		 		char* num=amount;
+		 		SKPIC32_GLCDWriteText(count,0,num);
+		 		DelayMs(20);
 		 		#ifdef DEBUG
 					hal_sendString_UART1("amount = ");
 					hal_uartWriteNumber(amount);
@@ -363,12 +312,7 @@ void stateMachine(uint8 eventId){
     	}
     	else if(eventId == (uint8)CANCEL){
 	    	amount=0;
-	    	product_no=0;
-	    	Disp_GLCDClearDisp();
-			DelayMs(20);
-    		Disp_GLCDWriteText(0, 0, "INSERT PRODUCT");
-    		Disp_GLCDWriteText(0, 1,"NUMBER");
-    	    changeState(WAIT_PRODUCT);  
+	    	changeState(WAIT_AMOUNT);
     	}
     
      break;
@@ -467,11 +411,9 @@ void onStateEntry(uint8 stateId){
     break;
     
     case INIT:
-		Disp_GLCDClearDisp();
-		DelayMs(20);
-    	Disp_GLCDWriteText(2, 0, "WELCOME");
-    	DelayMs(200); 			//long delay
-
+      
+ 
+    
     break;
     
     case UPDATE_VARS :
@@ -480,10 +422,8 @@ void onStateEntry(uint8 stateId){
     break;
     
     case WAIT_MONEY:
-    Disp_GLCDClearDisp();
-	DelayMs(20);
-    Disp_GLCDWriteText(0, 0, " INSERT MONEY");
-	DelayMs(200);				//long delay
+    
+    
     break;
     
     case WAIT_PRODUCT:

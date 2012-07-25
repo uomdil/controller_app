@@ -4,7 +4,15 @@ C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\NFC.
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.c
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\UART.c
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.c
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\LCD.c
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Common\skpic32_glcd.c
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Common\TimeDelay.c
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.h
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\UART.h
 C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.h
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\LCD.h
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\Compiler.h
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\skpic32_glcd.h
+C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\TimeDelay.h
