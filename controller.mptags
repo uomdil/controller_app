@@ -8,7 +8,7 @@
 !_TAG_REVISION_VERSION	6.0.1	//
 ALL_CLEAR::mPORTBOpenDrainClose(COL1|COL2	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.c	64;"	d	line:64	file:
 ALL_SET::PORTSetBits(IOPORT_B,COL1|COL2	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.c	57;"	d	line:57	file:
-AMOUNT	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	479;"	l	line:479
+AMOUNT	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	496;"	l	line:496
 AMOUNT::2	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	49;"	d	line:49	file:
 BALANCE::7	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	80;"	d	line:80
 BIT	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	66;"	t	line:66
@@ -635,7 +635,7 @@ byte	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\inclu
 byte	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	201;"	m	line:201
 byte	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	378;"	m	line:378
 byte	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	416;"	m	line:416
-changeState	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	434;"	f	line:434	signature:(uint8 nextStateId)
+changeState	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	449;"	f	line:449	signature:(uint8 nextStateId)
 changeState	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	82;"	p	line:82	file:	signature:(uint8 nextStateId)
 check_key::switch(key){	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.h	157;"	d	line:157
 chk	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.c	298;"	l	line:298
@@ -645,7 +645,7 @@ cyclesRequiredForEntireDelay	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controlle
 dat	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\LCD.c	401;"	l	line:401
 databuff	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.c	53;"	v	line:53
 dec	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\UART.c	99;"	l	line:99
-deque	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	603;"	f	line:603
+deque	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	620;"	f	line:620
 deque	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	84;"	p	line:84	file:
 disable	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\LCD.c	110;"	f	line:110
 done	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.c	73;"	v	line:73
@@ -653,7 +653,7 @@ dummy	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Phys
 dword	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	256;"	m	line:256
 dword	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	470;"	m	line:470
 enable	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\LCD.c	106;"	f	line:106
-enque	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	592;"	f	line:592	signature:(uint8 eventId)
+enque	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	609;"	f	line:609	signature:(uint8 eventId)
 enque	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	181;"	p	line:181	signature:(uint8 eventId)
 erase_flash_page	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.c	101;"	f	line:101	signature:(uint32 page)
 erase_flash_page	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.h	94;"	p	line:94	signature:(uint32 number)
@@ -664,7 +664,7 @@ flash_page_data	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes
 flash_row_data	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.c	64;"	f	line:64	signature:(uint32* data, uint32 length)
 flash_row_data	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.h	91;"	p	line:91	signature:(uint32* data, uint32 length)
 g_EventQueue	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	61;"	v	line:61
-getNext	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	615;"	f	line:615	signature:(uint8 index)
+getNext	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	632;"	f	line:632	signature:(uint8 index)
 getNext	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	86;"	p	line:86	file:	signature:(uint8 index)
 hal_allUARTInit	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\UART.c	16;"	f	line:16	signature:(void)
 hal_allUARTInit	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\UART.h	79;"	p	line:79	signature:(void)
@@ -680,7 +680,6 @@ i	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical
 int16	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	148;"	t	line:148
 int32	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	150;"	t	line:150
 int8	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	146;"	t	line:146
-j	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	143;"	l	line:143
 j	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\LCD.c	402;"	l	line:402
 key	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.h	75;"	v	line:75
 keypad_init	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\keys.c	90;"	f	line:90
@@ -700,9 +699,9 @@ max	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physic
 memcmppgm2ram::(a,b,c)memcmp(a,b,c)	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\Compiler.h	139;"	d	line:139
 memcpypgm2ram::(a,b,c)memcpy(a,b,c)	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\Compiler.h	141;"	d	line:141
 nextEvent	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	190;"	l	line:190
-onStateEntry	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	442;"	f	line:442	signature:(uint8 stateId)
+onStateEntry	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	457;"	f	line:457	signature:(uint8 stateId)
 onStateEntry	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	85;"	p	line:85	file:	signature:(uint8 stateId)
-onStateExit	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	515;"	f	line:515	signature:(uint8 stateId)
+onStateExit	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	532;"	f	line:532	signature:(uint8 stateId)
 onStateExit	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	83;"	p	line:83	file:	signature:(uint8 stateId)
 pagebuff	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.c	52;"	v	line:52
 persistent	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\Compiler.h	185;"	d	line:185
@@ -738,7 +737,7 @@ type	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physi
 uint16	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	147;"	t	line:147
 uint32	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	149;"	t	line:149
 uint8	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\global.h	145;"	t	line:145
-val	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	608;"	l	line:608
+val	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Logic\main.c	625;"	l	line:625
 val	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\UART.c	95;"	l	line:95
 word	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\Physical\Flash_Controller.c	168;"	l	line:168
 word	C:\Users\Dilshan\Dropbox\FYP\Ongoing_work\Controller\MPLAB_codes\V1.0\include\GenericTypeDefs.h	194;"	m	line:194

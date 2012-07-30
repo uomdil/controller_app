@@ -3,7 +3,7 @@
 #include "GenericTypeDefs.h"
 #include "TimeDelay.h"
 #include "skpic32_glcd.h"
-
+#include "graphics.h"
 
 void Disp_Init(){
 
@@ -57,8 +57,12 @@ void Disp_GLCDInit()
     Disp_GLCDCommand(0b00000010);// Returns to home. Cursor moves to starting point.
     
     //Start screen
-    Disp_GLCDWriteText(2, 0,"WELCOME");
-
+	Disp_GLCDEnableGraphics();
+	Disp_GLCDClearGraphics();	
+	Disp_GLCDFillScreenGraphic(graphic);
+	DelayMs(200);
+	Disp_GLCDClearGraphics();
+	Disp_GLCDDisableGraphics();
 }
 
 /*******************************************************************************
@@ -99,7 +103,7 @@ void Disp_GLCDCommand(unsigned char command)
 	Delay10us(2); 
     E = 0;
 
-	DelayMs(1);					// Please increase this delay if the screen is not showing things correctly.
+	Delay10us(2);					// Please increase this delay if the screen is not showing things correctly.
 	
 }
 
@@ -141,7 +145,7 @@ void Disp_GLCDData(unsigned char data)
 	Delay10us(2);  
 	E = 0;
 
-	DelayMs(1);					// Please increase this delay if the screen is not showing things correctly.
+	Delay10us(2);				// Please increase this delay if the screen is not showing things correctly.
 }
 
 /*******************************************************************************
