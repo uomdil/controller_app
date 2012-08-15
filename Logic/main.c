@@ -37,7 +37,7 @@
 //#include "billMotorControl.h"
 #include "Flash_Controller.h"
 #include "skpic32_glcd.h"
-
+#include "ProductDB.h"
 
 /* 
 ********************************************************************************************************* 
@@ -138,69 +138,38 @@ int main(void)
 	    hal_sendChar_UART1('\n');
     #endif
   	
-  	//INTEnableInterrupts();
-  	//INTEnableSystemMultiVectoredInt();
-  	
-  	//uint8 j=0;
-  	
-	/*Disp_GLCDClearDisp();
-	Disp_GLCDEnableGraphics();
-	Disp_GLCDClearGraphics();	
-	Disp_GLCDFillScreenGraphic(grph);
-	DelayMs(10000);
-	Disp_GLCDClearGraphics();
-	Disp_GLCDDisableGraphics();
-	*/
+  	INTEnableInterrupts();
+  	INTEnableSystemMultiVectoredInt();
 
-
-	// CGRAM
-	/*Disp_GLCDWrite(0, 0, 0x00);
-	Disp_GLCDData(0x02);
+	//setTraySize(2);
+	//setNoOfTrays(3);
+	//char tmp[]="dilshan";
+	//addData(2,1,tmp,sizeof(tmp),2,10,0);
 	
-	Disp_GLCDWrite(0, 1, 0x00);
-	Disp_GLCDData(0x04);
-	
-	Disp_GLCDWrite(0, 2, 0x00);
-	Disp_GLCDData(0x06);*/
-	
-	//CGROM
-	
-	/*for(j=0;j<5;j++){
-		Disp_GLCDWrite(0+j, 0, 0xA2);
-		Disp_GLCDData(0x40+j);
-	}
-	
-	for(j=5;j<10;j++){
-		Disp_GLCDWrite(0+j, 1, 0xA2);
-		Disp_GLCDData(0x40+j);
-	}*/
-		
-	/*Disp_GLCDWriteText(0, 0, "Hello World!");
-	for(j=25;j<30;j++){
-		Disp_GLCDWrite(0+j, 1, 0xA1);
-		Disp_GLCDData(0x40+j);
-	}
-	for(j=30;j<35;j++){
-		Disp_GLCDWrite(0+j, 2, 0xA1);
-		Disp_GLCDData(0x40+j);
-	}*/
-		
-	//DelayMs(2000);
+	//flashDB();
+	InitDB();
 
   	while(1){
+	  	
     	uint8 nextEvent = deque();								//get next event
     	if(nextEvent)
 	    {
      		stateMachine(nextEvent);							//enter the event functions
     	}
   
+  		if(state==UPDATE_VARS)
+  		{
+  			fsm_update();
+  		}
+  		
+  		
     	if(keyuse ==(uint8)PRODUCT)								//check key press for product selection
      	{	    
-     			keypad_pole();
+     		keypad_pole();
      	}
      	else if(keyuse ==(uint8)AMOUNT)							//check key press for amount selection
      	{
-     			keypad_pole();	
+     		keypad_pole();	
      	}	
   	}	
   	
@@ -230,7 +199,7 @@ void stateMachine(uint8 eventId){
     
     case DIAGNOSTIC:
       	if(eventId == (uint8)INIT_VARS){
-	      	enque(PRODUCT_NO); 			//for test only
+	      	//enque(PRODUCT_NO); 			//for test only
     	    changeState(INIT);  
     	}    
     	else if(eventId == (uint8)ERROR){	    	
@@ -241,21 +210,20 @@ void stateMachine(uint8 eventId){
     
     case INIT:
       	if(eventId == (uint8)PRODUCT_NO){
-    	    changeState(WAIT_PRODUCT);    
+    	    //changeState(WAIT_PRODUCT);    
     	}
-   		else if(eventId == (uint8)UPDATE_DATA){
-   	    	changeState(UPDATE_VARS);
+   		else if(eventId == (uint8)UPDATE_DATA){		
+   	    	changeState(UPDATE_VARS);	
     	}
     
      break;
     
     case UPDATE_VARS :
+
+    	
       	if(eventId == (uint8)FIN){
     	    changeState(INIT);  
     	}    
-    	else if(eventId == (uint8)MORE_DATA){
-	    	
-    	}
    
      break;
     
@@ -265,7 +233,23 @@ void stateMachine(uint8 eventId){
 				hal_sendString_UART1("Got product");
 				hal_sendChar_UART1('\n');
 			#endif
-    	    changeState(WAIT_AMOUNT);  
+			if(tbl[product_no].amount==0)
+			{
+				Disp_GLCDClearDisp();
+		 		Disp_GLCDWriteText(0,0,"UNAVAILABLE");
+				DelayMs(200);
+				enque(CANCEL);
+			}else if(product_no==0)
+			{
+				Disp_GLCDClearDisp();
+		 		Disp_GLCDWriteText(0,0,"UNAVAILABLE");
+				DelayMs(100);
+				enque(CANCEL);
+			}
+			else
+			{
+    	    	changeState(WAIT_AMOUNT);
+   			} 	      
     	}    
     	else if(eventId == (uint8)ENTER_NO){
 	    	check_key()
@@ -291,10 +275,7 @@ void stateMachine(uint8 eventId){
 	    	enque(INIT_VARS);
 	    	changeState(RETURN_MONEY);
     	}
-    	else if(eventId == (uint8)WRONG){
-	    	product_no=0;
-	    	changeState(INIT);
-    	}
+    	
       
      break;
     
@@ -304,7 +285,33 @@ void stateMachine(uint8 eventId){
 				hal_sendString_UART1("Got amount");
 				hal_sendChar_UART1('\n');
 			#endif
-    	    changeState(WAIT_MONEY);  
+			if(tbl[product_no].amount<amount)
+			{
+				Disp_GLCDClearDisp();
+		 		Disp_GLCDWriteText(0,0,"AMOUNT EXCEEDED");
+		 		DelayMs(100);
+		 		amount=0;
+		 		changeState(WAIT_AMOUNT);
+			}
+			else if(amount==0)
+			{
+				amount=1;
+				total=amount*tbl[product_no].valDec;
+				Disp_GLCDClearDisp();
+		 		Disp_GLCDWriteText(0,3,"Total = ");
+		 		Disp_GLCDWrite(3,1,(total/10)+0x30);
+		 		Disp_GLCDWrite(4,1,(total-(total/10)*10)+0x30);
+    	    	changeState(WAIT_MONEY);  
+			}
+			else 
+			{
+				total=amount*tbl[product_no].valDec;
+				Disp_GLCDClearDisp();
+		 		Disp_GLCDWriteText(0,3,"Total = ");
+		 		Disp_GLCDWrite(3,1,(total/10)+0x30);
+		 		Disp_GLCDWrite(4,1,(total-(total/10)*10)+0x30);
+    	    	changeState(WAIT_MONEY);  
+   			} 	    
     	}    
     	else if(eventId == (uint8)ENTER_NO){
 	    	check_key()
@@ -313,11 +320,27 @@ void stateMachine(uint8 eventId){
 		 		//write to LCD
 		 		Disp_GLCDClearDisp();
 		 		Disp_GLCDWriteText(0,0,"Amount Entered");
-		 		DelayMs(10);
 		 		Disp_GLCDWrite(3,1,(amount/10)+0x30);
-		 		DelayMs(10);
 		 		Disp_GLCDWrite(4,1,(amount-(amount/10)*10)+0x30);
-		 		DelayMs(10);
+				uint32 *nm=tbl[product_no].name;
+				uint8 i=0;
+				for(i=0;i<WORD_SIZE/2;i++){
+					Disp_GLCDWrite(i,2,*nm);
+					nm++;
+					if(i<WORD_SIZE/2-1){
+						Disp_GLCDData(*nm);
+						nm++;
+					}
+				}
+				uint32 valD=tbl[product_no].valDec;
+				uint32 valC=tbl[product_no].valCent;
+	 			Disp_GLCDWriteText(0,3,"Price:");
+	 			Disp_GLCDWrite(4,3,(valD/10)+'0');
+	 			Disp_GLCDData((valD-(valD/10)*10)+'0');
+	 			Disp_GLCDWrite(5,3,0x2E);
+	 			Disp_GLCDData((valC/10)+'0');
+	 			Disp_GLCDWrite(6,3,(valC-(valC/10)*10)+'0');
+	 			
 		 		#ifdef DEBUG
 					hal_sendString_UART1("amount = ");
 					hal_uartWriteNumber(amount);
@@ -333,9 +356,10 @@ void stateMachine(uint8 eventId){
     
      break;
     
-    case WAIT_MONEY:
-    	    
+    case WAIT_MONEY:   	    
     	if(eventId == (uint8)COIN_IN){
+    	}
+    	else if(eventId == (uint8)CASH_IN){
     	}
     	else if(eventId == (uint8)NFC_IN){	
 	    	enque( NFC_GET_CONFIRM);
@@ -349,10 +373,16 @@ void stateMachine(uint8 eventId){
 	    	enque(INIT_VARS);	    	
 	    	changeState(RETURN_MONEY);
     	}
+    	else if(eventId == (uint8)CANCEL){
+	    	amount=0;
+	    	product_no=0;
+    	    changeState(WAIT_PRODUCT);  
+    	}
+    	else if(eventId == (uint8)ENTER_NO){
+	    	check_key()
+	    }	
     	
      break;
-    
-    
     
     case BALANCE:
     	if(eventId == (uint8)OK){
@@ -452,8 +482,9 @@ void onStateEntry(uint8 stateId){
 		Disp_GLCDClearDisp();
 		DelayMs(20);
     	Disp_GLCDWriteText(2, 0, "WELCOME");
-    	DelayMs(200); 			//long delay
-
+    	DelayMs(100); 			//long delay
+		amount=0;
+	    product_no=0;
     break;
     
     case UPDATE_VARS :
@@ -462,29 +493,33 @@ void onStateEntry(uint8 stateId){
     break;
     
     case WAIT_MONEY:
-    Disp_GLCDClearDisp();
-	DelayMs(20);
-    Disp_GLCDWriteText(0, 0, " INSERT MONEY");
-	DelayMs(200);				//long delay
+	    Disp_GLCDClearDisp();
+		DelayMs(20);
+	    Disp_GLCDWriteText(0, 0, " INSERT MONEY");
+	    Disp_GLCDWriteText(0,3,"Total = ");
+		Disp_GLCDWrite(3,3,(total/10)+0x30);
+		Disp_GLCDData((total-(total/10)*10)+0x30);
+		DelayMs(1);
+		keyuse=PRODUCT;
     break;
     
     case WAIT_PRODUCT:
-    Disp_GLCDClearDisp();
-	DelayMs(20);
-	Disp_GLCDWriteText(0, 0, "INSERT PRODUCT");
-	Disp_GLCDWriteText(0, 1,"NUMBER");
-    count=0; 
-    keyuse=PRODUCT;     
+	    Disp_GLCDClearDisp();
+		DelayMs(20);
+		Disp_GLCDWriteText(0, 0, "INSERT PRODUCT");
+		Disp_GLCDWriteText(0, 1,"NUMBER");
+	    count=0; 
+	    keyuse=PRODUCT;     
       
     break;
     
     case WAIT_AMOUNT:
-    Disp_GLCDClearDisp();
-	DelayMs(20);
-    Disp_GLCDWriteText(0, 0, " ENTER AMOUNT");
-	DelayMs(200);				//long delay
-    keyuse==AMOUNT; 
-    count=0; 
+	    Disp_GLCDClearDisp();
+		DelayMs(20);
+	    Disp_GLCDWriteText(0, 0, " ENTER QUANTITY");
+		DelayMs(50);				//long delay
+	    keyuse==AMOUNT; 
+	    count=0; 
     
     break;
     
@@ -544,7 +579,7 @@ void onStateExit(uint8 stateId){
       break;
     
     case WAIT_MONEY:
-      
+    keyuse=0;
     
       break;
     
@@ -554,7 +589,6 @@ void onStateExit(uint8 stateId){
     break;
     
     case WAIT_AMOUNT:
-    keyuse=0;
 	count=0;
     
     break;

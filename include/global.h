@@ -50,7 +50,7 @@
 
 
 //for debug
-#define DEBUG
+//#define DEBUG
 
 
 //for console

@@ -59,7 +59,18 @@
 	}												\
 	
 
-
+#define MDB_SEND_9_DATA(PORT)							\
+	void hal_uartSend9bitData_##PORT(unsigned int no){	\
+		UART_DATA data = {.__data = no};				\
+      	while(!UARTTransmitterIsReady(PORT))			\
+        ;												\
+      	UARTSendData(PORT,data);						\
+      	while(!UARTTransmissionHasCompleted(PORT))		\
+        ;												\
+	}													\
+	
+#define MDB_SEND_9_DATA_PROTO(PORT)  void hal_uartSend9bitData_##PORT (unsigned int no)
+	
 
 	/*
 	//	    while(!DataRdyUART2());						\
@@ -78,17 +89,8 @@
 
 void hal_allUARTInit(void);
 UART_SEND_CHAR_PROTO(UART1);
-UART_SEND_CHAR_PROTO(UART2);
-UART_SEND_CHAR_PROTO(UART3);
-UART_SEND_CHAR_PROTO(UART4);
-UART_SEND_CHAR_PROTO(UART5);
-UART_SEND_CHAR_PROTO(UART6);
 UART_SEND_STRING_PROTO(UART1);
-UART_SEND_STRING_PROTO(UART2);
-UART_SEND_STRING_PROTO(UART3);
-UART_SEND_STRING_PROTO(UART4);
-UART_SEND_STRING_PROTO(UART5);
-UART_SEND_STRING_PROTO(UART6);
+
 
 void hal_uartWriteNumber(unsigned int no);
 

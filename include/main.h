@@ -1,6 +1,6 @@
 /*
 ********************************************************************************************************* 
- *					 	Flash Controller file 
+ *					 	Global header file 
  *
  * (c) Copyright 2012 D2NM, All rights reserved
 ********************************************************************************************************* 
@@ -11,7 +11,7 @@
 ********************************************************************************************************* 
  * 						Vending machine controller 
  *
- * Filename      : Flash_Controller.h
+ * Filename      : main.h
  * Version       : V1.0
  * Programmer(s) : DIL
  *
@@ -28,8 +28,8 @@
 ********************************************************************************************************* 
 */ 
 
-#ifndef FLASH
-#define FLASH
+#ifndef GLOBAL
+#define GLOBAL
  
  
  
@@ -39,10 +39,11 @@
 ********************************************************************************************************* 
 */ 
 
+
 #include <p32xxxx.h> 
 #include <plib.h>                   // include peripheral library function
-#include <stdlib.h>
 #include "global.h"
+
 
 /* 
 ********************************************************************************************************* 
@@ -50,9 +51,6 @@
 ********************************************************************************************************* 
 */ 
 
-#define NVM_PROGRAM_PAGE 0xbd030000
-#define NVM_PAGE_SIZE	8192  //actually 4096
-#define NVM_ROW_SIZE	512
 
 
 /* 
@@ -60,6 +58,8 @@
 *                                               DATA TYPES 
 ********************************************************************************************************* 
 */ 
+
+
 
 
 /* 
@@ -88,33 +88,6 @@
 ********************************************************************************************************* 
 */ 
 
-void flash_row_data(uint32* data, uint32 length);
-void flash_page_data(uint32* data, uint32 length);
-
-void erase_flash_page(uint32 number);
-
-void write_flash_word(uint32 data, uint32 address);
-void write_flash_row(uint32* data, uint32 length, uint32 page, uint32 row);
-void write_flash_page(uint32* data, uint32 length, uint32 page);
-
-uint32 read_flash_word(uint32 address);
-uint32* read_flash_row(uint32 length, uint32 page, uint32 row);
-uint32* read_flash_page(uint32 length, uint32 page);
-
-
-/*Example
-erase_flash_page(0);
-uint32 name[]={1,2,3,4,5,6,7,8,9,0};
-write_flash_row(name,10,0,0);
-*/
-
-/*Example
-erase_flash_page(0);
-uint32 name=4;
-write_flash_word(name, NVM_PROGRAM_PAGE+0x200);
-hal_uartWriteNumber(read_flash_word( NVM_PROGRAM_PAGE+0x200));
-hal_sendChar_UART1('\n');
-*/
 
 
 /* 
@@ -124,3 +97,4 @@ hal_sendChar_UART1('\n');
 */
 
 #endif
+

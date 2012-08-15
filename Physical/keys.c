@@ -89,7 +89,7 @@ void button(uint32 BIT_X);
 	
 void keypad_init(){
 	
-	PORTClearBits(IOPORT_B, COL1| COL2 |COL3);\
+	PORTClearBits(IOPORT_B, COL1| COL2 |COL3);
 	PORTClearBits(IOPORT_C, COL4);
 	
 	PORTSetPinsDigitalOut(IOPORT_E, BIT_0 | BIT_1| BIT_2);

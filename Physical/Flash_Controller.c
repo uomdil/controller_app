@@ -49,7 +49,7 @@
 ********************************************************************************************************* 
 */ 
 
-unsigned int pagebuff[1024];
+unsigned int pagebuff[2048];
 unsigned int databuff[128];
 
 
@@ -184,11 +184,11 @@ uint32* read_flash_row(uint32 length, uint32 page, uint32 row){
 	#ifdef DEBUG
 		hal_sendString_UART1("reading row");
 		hal_sendChar_UART1('\n');
-		for(i=0;i<length ;i++){
+		/*for(i=0;i<length ;i++){
 			hal_uartWriteNumber(databuff[i]);
 			hal_uartWriteNumber(i);
 			hal_sendChar_UART1('\n');	
-		}
+		}*/
 	#endif
 	
 	return databuff;
@@ -202,11 +202,11 @@ uint32* read_flash_page(uint32 length, uint32 page){
 	#ifdef DEBUG
 		hal_sendString_UART1("reading page");
 		hal_sendChar_UART1('\n');
-		for(i=0;i<length ;i++){
+		/*for(i=0;i<length ;i++){
 			hal_uartWriteNumber(pagebuff[i]);
 			hal_uartWriteNumber(i);
 			hal_sendChar_UART1('\n');	
-		}
+		}*/
 	#endif
 	
 	return pagebuff;	

@@ -1,6 +1,6 @@
 /*
 ********************************************************************************************************* 
- *					 	Flash Controller file 
+ *					 	Global header file 
  *
  * (c) Copyright 2012 D2NM, All rights reserved
 ********************************************************************************************************* 
@@ -9,9 +9,9 @@
 
 /*
 ********************************************************************************************************* 
- * 						Vending machine controller 
+ * 						Product database 
  *
- * Filename      : Flash_Controller.h
+ * Filename      : ProductDB.h
  * Version       : V1.0
  * Programmer(s) : DIL
  *
@@ -28,8 +28,8 @@
 ********************************************************************************************************* 
 */ 
 
-#ifndef FLASH
-#define FLASH
+#ifndef DB
+#define DB
  
  
  
@@ -39,9 +39,10 @@
 ********************************************************************************************************* 
 */ 
 
+
 #include <p32xxxx.h> 
 #include <plib.h>                   // include peripheral library function
-#include <stdlib.h>
+#include "main.h"
 #include "global.h"
 
 /* 
@@ -50,16 +51,38 @@
 ********************************************************************************************************* 
 */ 
 
-#define NVM_PROGRAM_PAGE 0xbd030000
-#define NVM_PAGE_SIZE	8192  //actually 4096
-#define NVM_ROW_SIZE	512
+#define TABLE_SIZE 100  
+#define WORD_SIZE 8 
 
+//states
+#define CONSOLE_UPDATE 0
+#define WAIT 1
+#define UPDATE 2
 
+//events
+#define FIN_TABLE 0
+#define FILL_TABLE 1
+#define END 2
+#define NAME 3
+#define NUMBER 4
+#define AMOUNT 5
+#define DEC 6
+#define CENT 7
+#define LENGTH 8 
 /* 
 ********************************************************************************************************* 
 *                                               DATA TYPES 
 ********************************************************************************************************* 
 */ 
+
+typedef struct 
+  {
+   	uint32 name[WORD_SIZE];		//can enter 20 characters for a product name
+    uint32 number;
+    uint32 amount;
+    uint32 valDec;
+    uint32 valCent; 
+  } Table;
 
 
 /* 
@@ -75,7 +98,10 @@
 ********************************************************************************************************* 
 */ 
 
-
+Table tbl[TABLE_SIZE];		
+extern uint32 update;
+extern uint32 dataDB;
+extern uint32 event;
 /* 
 ********************************************************************************************************* 
 *                                              MACROS 
@@ -88,33 +114,20 @@
 ********************************************************************************************************* 
 */ 
 
-void flash_row_data(uint32* data, uint32 length);
-void flash_page_data(uint32* data, uint32 length);
-
-void erase_flash_page(uint32 number);
-
-void write_flash_word(uint32 data, uint32 address);
-void write_flash_row(uint32* data, uint32 length, uint32 page, uint32 row);
-void write_flash_page(uint32* data, uint32 length, uint32 page);
-
-uint32 read_flash_word(uint32 address);
-uint32* read_flash_row(uint32 length, uint32 page, uint32 row);
-uint32* read_flash_page(uint32 length, uint32 page);
+void InitDB();
+void addData(uint32 size,uint32 num,char name[],uint32 len,uint32 amount,uint32 valDec,uint32 valCent);
+Table getTable(uint32 trayNum,uint32 num);
+void flashDB();
+void setTraySize(uint32 size);
+void setNoOfTrays(uint32 num);
+void process();
 
 
-/*Example
-erase_flash_page(0);
-uint32 name[]={1,2,3,4,5,6,7,8,9,0};
-write_flash_row(name,10,0,0);
-*/
-
-/*Example
-erase_flash_page(0);
-uint32 name=4;
-write_flash_word(name, NVM_PROGRAM_PAGE+0x200);
-hal_uartWriteNumber(read_flash_word( NVM_PROGRAM_PAGE+0x200));
-hal_sendChar_UART1('\n');
-*/
+/* 
+********************************************************************************************************* 
+*                                        CONFIGURATION BITS 
+********************************************************************************************************* 
+*/ 
 
 
 /* 

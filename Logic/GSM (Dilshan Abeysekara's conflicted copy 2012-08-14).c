@@ -66,10 +66,10 @@ All rights reserved
 ********************************************************************************************************* 
 */ 
 
-/*
+
 void initGSM()
 {
-	hal_sendString_UART2("AT");
+//	hal_sendString_UART2("AT");
 	
 
 }
@@ -86,5 +86,5 @@ char* getSMS()
 {
 
 }
-*/
+
 
