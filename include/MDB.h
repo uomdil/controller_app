@@ -90,6 +90,7 @@
 
 
 void mdbStateMachine();
+void hal_mdbInit(void);
 
 
 

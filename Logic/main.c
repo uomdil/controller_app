@@ -38,6 +38,7 @@
 #include "Flash_Controller.h"
 #include "skpic32_glcd.h"
 #include "ProductDB.h"
+#include "MDB.h"
 
 /* 
 ********************************************************************************************************* 
@@ -93,12 +94,12 @@ uint8 getNext(uint8 index);
 ********************************************************************************************************* 
 */ 
 
-#pragma config FNOSC 	= FRCPLL       	// Internal Fast RC oscillator (8 MHz) w/ PLL
+#pragma config FNOSC 	= PRIPLL       	// Internal Fast RC oscillator (8 MHz) w/ PLL  //FRCPLL 
 #pragma config FPLLIDIV = DIV_2    		// Divide FRC before PLL (now 4 MHz)
 #pragma config FPLLMUL  = MUL_20     	// PLL Multiply (now 80 MHz)
                                     
 #pragma config FPLLODIV = DIV_1         // PLL Output Divider
-#pragma config FPBDIV   = DIV_1         // Peripheral Clock divisor
+#pragma config FPBDIV   = DIV_8         // Peripheral Clock divisor
 #pragma config FWDTEN   = OFF           // Watchdog Timer
 #pragma config WDTPS    = PS1           // Watchdog Timer Postscale
 #pragma config FCKSM    = CSDCMD        // Clock Switching & Fail Safe Clock Monitor
@@ -133,6 +134,8 @@ int main(void)
   	//motorsInit();
   	//motorDir(CLOCKWISE);
   	
+  	hal_mdbInit();
+  	
   	#ifdef SHOW_MESSAGES
 	    hal_sendString_UART1("Machine started");
 	    hal_sendChar_UART1('\n');
@@ -141,17 +144,17 @@ int main(void)
   	INTEnableInterrupts();
   	INTEnableSystemMultiVectoredInt();
 
-	//setTraySize(2);
-	//setNoOfTrays(3);
-	//char tmp[]="dilshan";
-	//addData(2,1,tmp,sizeof(tmp),2,10,0);
+	/*setTraySize(2);
+	setNoOfTrays(3);
+	char tmp[]="dilshan";
+	addData(2,1,tmp,sizeof(tmp),2,10,0);
 	
-	//flashDB();
+	flashDB();*/
 	InitDB();
 
   	while(1){
 	  	
-    	uint8 nextEvent = deque();								//get next event
+    	/*uint8 nextEvent = deque();								//get next event
     	if(nextEvent)
 	    {
      		stateMachine(nextEvent);							//enter the event functions
@@ -170,7 +173,8 @@ int main(void)
      	else if(keyuse ==(uint8)AMOUNT)							//check key press for amount selection
      	{
      		keypad_pole();	
-     	}	
+     	}*/	
+     	mdbStateMachine();
   	}	
   	
 }
@@ -219,7 +223,6 @@ void stateMachine(uint8 eventId){
      break;
     
     case UPDATE_VARS :
-
     	
       	if(eventId == (uint8)FIN){
     	    changeState(INIT);  

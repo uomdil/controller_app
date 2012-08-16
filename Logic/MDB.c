@@ -47,8 +47,8 @@
 //UART2B - UART6
 #define PB_DIV                 	8
 #define PRESCALE               	256
-#define TIME_FREQUENCY			1000
 #define MILLISECOND				SYS_FREQ/PB_DIV/PRESCALE/1000
+#define SECOND					SYS_FREQ/PB_DIV/PRESCALE
 
 
 #define NOT_INIT	0
@@ -58,12 +58,12 @@
 #define NO_PENDING_CMD				0xFFFF
 
 #define DESIRED_BAUDRATE    		(9600) 
-#define MDB_PORT 					UART3A
-#define MDB_VECTOR 					_UART_3A
+#define MDB_PORT 					UART2
+#define MDB_VECTOR 					_UART_2
 	
 #define NO_OF_MDB_EVENTS 			3
-#define POLL_TIME					50*(MILLISECOND)
-#define RETRY_TIME					5*(MILLISECOND)
+#define POLL_TIME					(SECOND)
+#define RETRY_TIME					40*(SECOND)
 
 //states
 #define IDLE_STATE			1
@@ -77,25 +77,25 @@
 
 
 //addresses
-#define BILL_VALIDATOR_ADDRESS	0x060    //0x030 - all values are shifted by 1 to make room for address bit
-#define COIN_CHANGER_ADDRESS	0x010     //0x08
-#define MODE_BIT				0x001
+#define BILL_VALIDATOR_ADDRESS	0x30    //0x030 - all values are shifted by 1 to make room for address bit
+#define COIN_CHANGER_ADDRESS	0x08     //0x08
+#define MODE_BIT				0x100
 
 
 //bill validator - commands
 #define RESET 			0x00  //0x00 up to 0x07 - all values are shifted by 1 to make room for address bit
-#define SETUP 			0x02
-#define SECURITY 		0x04
-#define POLL 			0x06
-#define BILL_TYPE 		0x08
-#define ESCROW 			0x0A
-#define STACKER 		0x0C
-#define EXPANSION 		0x0E
+#define SETUP 			0x01
+#define SECURITY 		0x02
+#define POLL 			0x03
+#define BILL_TYPE 		0x04
+#define ESCROW 			0x05
+#define STACKER 		0x06
+#define EXPANSION 		0x07
 
 //common and basic commands
 #define ACK	 			0x00			
-#define NAK				0x1FE //0xFF
-#define RET				0x154 //0xAA
+#define NAK				0xFF //0xFF
+#define RET				0xAA //0xAA
 
 //lengths of responses
 #define SETUP_LENGTH	 	15
@@ -126,9 +126,9 @@
 #define INIT_CMD_LENGTH 5
 
 //coin commands
-#define TUBE_STATUS		0x04
-#define COIN_TYPE 		0x08
-#define DISPENSE_COIN	0x0A
+#define TUBE_STATUS		0x02
+#define COIN_TYPE 		0x04
+#define DISPENSE_COIN	0x05
 
 
 //peripherlal bytes
@@ -255,7 +255,7 @@ void hal_mdbInit(void);
 
 unsigned int preparePacket(unsigned int command,unsigned int unit){
 	
-	mdbPacketTx[0] = (unsigned char)(command | unit | MODE_BIT); 
+	mdbPacketTx[0] = (command | unit | MODE_BIT); 
 	unsigned int length = 1;
 	
 	currentCommand = command;
@@ -323,12 +323,12 @@ void sendMdbPacket(unsigned int command,unsigned int unit){
 
 unsigned int generateCheckSum(unsigned int length,unsigned int * buffer){
 	unsigned int i = 0;
-	unsigned int checkSum = *buffer;
+	unsigned int checkSum = (*buffer);
 	i++;
 	for(;i<length;i++){
-		checkSum += *(buffer+i);
+		checkSum += (*(buffer+i));
 	}
-	return ((checkSum)&0xFF)<<1;	
+	return ((checkSum)&0xFF);	
 }
 
 void receivePacket(unsigned int _9bitData){
@@ -344,11 +344,11 @@ void receivePacket(unsigned int _9bitData){
 	
 	
 	//first part of algo
-	if(currentCommand == RESET || 
+	if((currentCommand == RESET || 
 	   currentCommand == SECURITY || 
 	   currentCommand == BILL_TYPE || 
 	   currentCommand == ESCROW ||
-	   currentCommand == POLL)
+	   currentCommand == POLL)&&(last==MODE_BIT))
 	{	
 		if(command == ACK){ 
 			mdbEnque(COMM_SUCCESSFUL);
@@ -376,7 +376,7 @@ void receivePacket(unsigned int _9bitData){
 	}
 	
 	//second part of algo
-	if(last){
+	if(last == MODE_BIT){
 		processRxPacket();
 		contentLength = lengthRx - 1;  //-1 for the CHK byte
 		lengthRx = 0;
@@ -426,8 +426,8 @@ void processRxPacket(){
 	//one for sure we have the correct data	- now process
 	if(currentCommand == SETUP){
 	
-		unsigned int currencyCode = mdbPacketRx[CURRENCY_CODE_POS]<<7 + mdbPacketRx[CURRENCY_CODE_POS+1]>>1;
-		unsigned int scalingFactor = mdbPacketRx[BILL_SCALE_FACTOR_POS]<<7 + mdbPacketRx[BILL_SCALE_FACTOR_POS]>>1;
+		unsigned int currencyCode = mdbPacketRx[CURRENCY_CODE_POS]<<8 + mdbPacketRx[CURRENCY_CODE_POS+1];
+		unsigned int scalingFactor = mdbPacketRx[BILL_SCALE_FACTOR_POS]<<8 + mdbPacketRx[BILL_SCALE_FACTOR_POS+1];
 		
 		if(currencyCode != LKR_CODE){
 			sendBillsAccepted = 0;
@@ -438,7 +438,7 @@ void processRxPacket(){
 		unsigned int j;
 		for(i=BILL_TYPE_POS;i<contentLength;i++){
 			for(j=0;j<lengthBillsAccepted;j++){
-				if( billsAccepted[j] == (mdbPacketRx[i]>>1)*(scalingFactor) ){
+				if( billsAccepted[j] == (mdbPacketRx[i])*(scalingFactor) ){
 					sendBillsAccepted |= 0x01<<(i-BILL_TYPE_POS);
 				}				
 			}
@@ -498,7 +498,7 @@ void mdbStateMachine(){
 			case IDLE_STATE:{
 			
 				if(eventId == COMM_NEXT){
-					sendMdbPacket(peripherals[currentPeripheral].address,currentCommand);
+					sendMdbPacket(currentCommand,peripherals[currentPeripheral].address);
 					startRetryTimer();
 					state = COMM_STATE;
 				}
@@ -508,7 +508,7 @@ void mdbStateMachine(){
 			case COMM_STATE:{
 			
 				if(eventId == MESSAGE_RECEIVED){
-					sendMdbPacket(peripherals[currentPeripheral].address,ACK);
+					sendMdbPacket(ACK,peripherals[currentPeripheral].address);
 					lastPacket = 1;
 				}
 				else if(eventId == COMM_NEXT){
@@ -556,6 +556,7 @@ void hal_mdbInit(void){
 	
 	startPollTimer();
 		
+	unsigned int pr = ReadPeriod5();	
 	//legacy opening 
 	//#define UBRG(baud) (((GetPeripheralClock())/4/(baud)-1)) 
 	//OpenUART2(UART_EN | UART_NO_PAR_9BIT | UART_1STOPBIT | UART_MODE_SIMPLEX | UART_BRGH_FOUR, UART_RX_ENABLE | UART_TX_ENABLE, UBRG(DESIRED_BAUDRATE) );
@@ -597,7 +598,7 @@ MDB_SEND_9_DATA(MDB_PORT)
 //////////////////////MDB ISRs///////////////////////////////////////////////////
 
 //uart isr
-UART_INT(_UART_3A, ipl2){
+UART_INT(_UART_2, ipl2){
 	if(INTGetFlag(INT_SOURCE_UART_RX(MDB_PORT))){
 	    INTClearFlag(INT_SOURCE_UART_RX(MDB_PORT));	    
 	    if (UARTReceivedDataIsAvailable(MDB_PORT))      
@@ -639,14 +640,14 @@ void __ISR(_TIMER_5_VECTOR, ipl4) PollTimerIntHandler(void)
 void __ISR(_TIMER_4_VECTOR, ipl4) RetryTimerIntHandler(void)
 {
 	mT4ClearIntFlag();
-	if(!lastPacket){
+	/*if(!lastPacket){
 		mdbEnque(RETRY);	
 	}
 	else{
 		mdbEnque(COMM_SUCCESSFUL);
 		setStatus();
 		lastPacket = 0;
-	}
+	}*/
   
 }
 

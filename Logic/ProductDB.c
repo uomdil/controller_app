@@ -208,21 +208,10 @@ void fsm_update()
 			}
 			hal_sendChar_UART1('#');
 			hal_sendChar_UART1('\n');
-			if(event==(uint8)END){
-				enque(FIN);	
-			}
-			update=WAIT;
-		break;
-		
-		case WAIT:
-			if(event==(uint8)FILL_TABLE){
-				i=1;
-				j=0;
-				update = UPDATE;
-			}
-			if(event==(uint8)END){
-				enque(FIN);	
-			}
+			enque(FIN);	
+			update=5;
+			i=1;
+			j=0;
 		break;
 		case UPDATE:
 			if(event==(uint8)END){
@@ -231,9 +220,9 @@ void fsm_update()
 				flashDB();				
 				i=1;
 				j=0;
-				update=5;	
+				update=5;
+				event=9;	
 			}
-			
 		break;	
 	}	
 
@@ -246,10 +235,14 @@ void process(){
 }
 
 void fill()	{
-	uint8 cnt=1;
+	uint8 cnt=0;
 	traySize = 0;
 	noOftrays = 0;
 	
+	while(arr[cnt]=='\n' || arr[cnt]=='d')
+	{
+		cnt++;
+	}
 	while((char)arr[cnt]!='\n')
 	{
 		traySize=traySize*10+(arr[cnt]-'0');
@@ -306,7 +299,7 @@ void fill()	{
 				val=val*10+((char)arr[k]-'0');
 			}
 		}
-
 	}	
+	x=0;
 	
 	}

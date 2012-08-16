@@ -36,11 +36,10 @@ UART_INT(_UART_1, ipl2){
 				switch(x){
 					case 'r':enque(UPDATE_DATA);break;
 					case 's':update=CONSOLE_UPDATE;break;		//s for start
-					case 'd':event = FILL_TABLE;break;
-								
+					case 'd':update=UPDATE;break;		
 				}
 			}
-			else if(update ==UPDATE){
+			if(update ==UPDATE){
 				dataDB=x;
 				
 				if(x=='#'){
